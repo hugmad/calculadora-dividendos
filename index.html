@@ -870,7 +870,72 @@ function renderProj(){
 
 
 function saveCompanies(){localStorage.setItem("best_companies",JSON.stringify(COMPANIES));}
-function renderConfig(){const wrap=document.getElementById("config-list");if(!wrap)return;wrap.innerHTML=COMPANIES.map((c,i)=>`<div class="box" style="margin-bottom:10px"><div class="grid2"><input class="inp" value="${c.ticker}" onchange="COMPANIES[${i}].ticker=this.value"><input class="inp" value="${c.name}" onchange="COMPANIES[${i}].name=this.value"><input class="inp" value="${c.sector}" onchange="COMPANIES[${i}].sector=this.value"><input class="inp" type="number" value="${c.dy}" onchange="COMPANIES[${i}].dy=parseFloat(this.value)||0"><input class="inp" type="number" value="${c.teto}" onchange="COMPANIES[${i}].teto=parseFloat(this.value)||0"><button class="del-btn" onclick="removeCompany(${i})">Remover</button></div></div>`).join('');}
+function renderConfig(){const wrap=document.getElementById("config-list");if(!wrap)return;wrap.innerHTML=COMPANIES.map((c,i)=>`<div class="box" style="margin-bottom:10px"><div class="grid2"><div class="input-group">
+  <label>Ticker da ação</label>
+  <input class="inp" value="${c.ticker}"
+         onchange="COMPANIES[${i}].ticker=this.value.toUpperCase()">
+</div>
+
+<div class="input-group">
+  <label>Nome da empresa</label>
+  <input class="inp" value="${c.name}"
+         onchange="COMPANIES[${i}].name=this.value">
+</div>
+
+<div class="input-group">
+  <label>Setor</label>
+  <input class="inp" value="${c.sector}"
+         onchange="COMPANIES[${i}].sector=this.value">
+</div>
+
+<div class="input-group">
+  <label>Dividend Yield (0.08 = 8%)</label>
+  <input class="inp" type="number" step="0.001"
+         value="${c.dy}"
+         onchange="COMPANIES[${i}].dy=parseFloat(this.value)||0">
+</div>
+
+<div class="input-group">
+  <label>Preço teto</label>
+  <input class="inp" type="number"
+         value="${c.teto}"
+         onchange="COMPANIES[${i}].teto=parseFloat(this.value)||0">
+</div>
+
+<div class="input-group">
+  <label>Peso na carteira (%)</label>
+  <input class="inp" type="number"
+         value="${c.peso}"
+         onchange="COMPANIES[${i}].peso=parseFloat(this.value)||0">
+</div>
+
+<div class="input-group">
+  <label>Cor do card</label>
+  <select class="inp"
+          onchange="COMPANIES[${i}].color=this.value">
+    <option value="green">Verde</option>
+    <option value="amber">Amarelo</option>
+    <option value="teal">Azul Claro</option>
+    <option value="purple">Roxo</option>
+  </select>
+</div>
+
+<div class="input-group">
+  <label>Nível de risco</label>
+  <select class="inp"
+          onchange="COMPANIES[${i}].risco=this.value">
+    <option value="Baixo">Baixo</option>
+    <option value="Médio">Médio</option>
+    <option value="Alto">Alto</option>
+  </select>
+</div>
+
+<div class="input-group">
+  <label>Anos pagando dividendos</label>
+  <input class="inp"
+         value="${c.anos}"
+         onchange="COMPANIES[${i}].anos=this.value">
+</div><button class="del-btn" onclick="removeCompany(${i})">Remover</button></div></div>`).join('');}
 function addCompany(){COMPANIES.push({ticker:'NOVA3',name:'Nova Empresa',sector:'Setor',color:'green',dy:0.08,teto:0,peso:10,risco:'Médio',anos:'0 anos'});renderConfig();}
 function removeCompany(i){if(confirm('Remover empresa?')){COMPANIES.splice(i,1);renderConfig();}}
 function saveAllCompanies(){saveCompanies();pesos=COMPANIES.map(c=>c.peso||10);enabled=COMPANIES.map(()=>true);buildCompanyCards();renderAportePanel();updateCalc();alert('Alterações salvas');}
