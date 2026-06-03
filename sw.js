@@ -19,7 +19,7 @@ self.addEventListener('install', event => {
     caches.open(CACHE_NAME).then(cache => {
       console.log('[SW] Cacheando assets...');
       // Cache local assets obrigatoriamente, externos com fallback
-      const localAssets = ['/', '/index.html', '/manifest.json', '/icon-192.png', '/icon-512.png'];
+      const localAssets = ['/calculadora-dividendos/', '/calculadora-dividendos/index.html', '/calculadora-dividendos/manifest.json', '/calculadora-dividendos/icon-192.png', '/calculadora-dividendos/icon-512.png'];
       const extAssets = [
         'https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=Sora:wght@300;400;500;600&display=swap',
         'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js'
