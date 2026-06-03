@@ -1,6 +1,6 @@
 // Service Worker — Calculadora Dividendos BEST
 // Versão do cache — incremente para forçar atualização
-const CACHE_NAME = 'dividendos-best-v1';
+const CACHE_NAME = 'dividendos-best-v3';
 
 // Arquivos para cache offline
 const ASSETS = [
@@ -50,6 +50,12 @@ self.addEventListener('fetch', event => {
 
   // Ignora requests não-GET
   if (event.request.method !== 'GET') return;
+
+const url = new URL(event.request.url);
+
+if (url.origin !== location.origin) {
+  return;
+}
 
   // Estratégia cache-first para fontes e libs externas
   if (url.hostname.includes('googleapis') || url.hostname.includes('cloudflare') || url.hostname.includes('gstatic')) {
