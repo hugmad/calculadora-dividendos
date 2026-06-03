@@ -43,8 +43,11 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 .header p{font-size:14px;color:var(--text2);max-width:520px;margin:0 auto;line-height:1.7}
 
 /* ── Tabs ────────────────────────────────────────────── */
-.tabs{display:flex;gap:6px;background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:6px;margin-bottom:32px;animation:fadeUp .6s .05s ease both}
-.tab{flex:1;padding:10px 8px;text-align:center;font-size:13px;font-family:'DM Mono',monospace;color:var(--text2);border-radius:10px;cursor:pointer;transition:all .2s;border:none;background:transparent}
+.tabs{display:flex;gap:4px;background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:5px;margin-bottom:32px;animation:fadeUp .6s .05s ease both;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:0 0 auto;padding:9px 10px;text-align:center;font-size:11px;font-family:'DM Mono',monospace;color:var(--text2);border-radius:9px;cursor:pointer;transition:all .2s;border:none;background:transparent;display:flex;flex-direction:column;align-items:center;gap:3px;min-width:58px}
+.tab-icon{font-size:16px;line-height:1}
+.tab-label{font-size:9px;letter-spacing:.04em;white-space:nowrap}
 .tab.active{background:var(--bg3);color:var(--text);border:1px solid var(--border2)}
 .tab:hover:not(.active){color:var(--text);background:rgba(255,255,255,.04)}
 
@@ -193,8 +196,8 @@ input.peso-sl::-webkit-slider-thumb:hover{transform:scale(1.3)}
 .pie-pct{font-family:'DM Mono',monospace;font-size:13px;font-weight:500;color:var(--text)}
 
 /* ── APORTE PANEL ────────────────────────────────────── */
-.month-selector{display:flex;align-items:center;gap:10px;margin-bottom:20px}
-.month-selector select{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:9px 14px;font-family:'DM Mono',monospace;font-size:13px;color:var(--text);outline:none;cursor:pointer;flex:1}
+.month-selector{display:flex;align-items:center;gap:10px;margin-bottom:20px;flex-wrap:wrap}
+.month-selector select{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:9px 14px;font-family:'DM Mono',monospace;font-size:13px;color:var(--text);outline:none;cursor:pointer;flex:1;min-width:140px}
 .month-selector select:focus{border-color:var(--green)}
 .save-btn{background:var(--green);color:#0A0E17;border:none;border-radius:10px;padding:10px 20px;font-family:'DM Mono',monospace;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap}
 .save-btn:hover{background:#00ffb3;transform:translateY(-1px)}
@@ -212,7 +215,8 @@ input.peso-sl::-webkit-slider-thumb:hover{transform:scale(1.3)}
 .aporte-card[data-c="purple"]{border-color:rgba(167,139,250,.2)}
 
 /* ── History table ───────────────────────────────────── */
-.hist-table{width:100%;border-collapse:collapse;font-size:13px}
+.hist-table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;width:100%}
+.hist-table{width:100%;border-collapse:collapse;font-size:13px;min-width:420px}
 .hist-table th{text-align:left;font-size:10px;font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.08em;color:var(--text3);padding:0 10px 10px}
 .hist-table td{padding:11px 10px;border-top:1px solid var(--border);color:var(--text2);vertical-align:middle;font-family:'DM Mono',monospace;font-size:12px}
 .hist-table tr:last-child td{border-bottom:1px solid var(--border)}
@@ -243,12 +247,41 @@ input.peso-sl::-webkit-slider-thumb:hover{transform:scale(1.3)}
 
 /* ── Responsive ──────────────────────────────────────── */
 @media(max-width:620px){
+  .container{padding:20px 14px 80px}
+  .header{margin-bottom:28px}
+  .header h1{font-size:24px}
+  .header p{font-size:13px}
+  .tabs{margin-bottom:20px;border-radius:12px}
   .grid2,.grid3{grid-template-columns:1fr}
-  .pie-wrap-outer{flex-direction:column}
+  .pie-wrap-outer{flex-direction:column;align-items:flex-start}
   .month-selector{flex-direction:column}
   .save-btn{width:100%}
+  .box{padding:18px 14px}
+  .metric{padding:12px 10px}
+  .metric-val{font-size:16px}
+  .slider-display{font-size:22px}
+  .inp{font-size:15px}
+  .alloc-val{font-size:20px}
+  .div-total-val{font-size:22px}
+  .div-total-row{flex-direction:column;align-items:flex-start;gap:6px}
+  .hist-table{font-size:11px}
+  .hist-table th,.hist-table td{padding:8px 6px}
+  .totals-bar{grid-template-columns:1fr 1fr}
+  .chart-wrap{height:200px}
+  .chart-wrap-sm{height:160px}
+  /* config buttons */
+  #panel-config .save-btn-row{flex-direction:column}
 }
-@media(max-width:440px){.aporte-grid{grid-template-columns:1fr}}
+@media(max-width:440px){
+  .aporte-grid{grid-template-columns:1fr}
+  .grid4{grid-template-columns:1fr 1fr}
+  .cstats{grid-template-columns:1fr 1fr}
+  .totals-bar{grid-template-columns:1fr 1fr}
+  .div-grid{grid-template-columns:1fr 1fr}
+  .tab-label{display:none}
+  .tab{min-width:44px;padding:8px 6px}
+  .tab-icon{font-size:18px}
+}
 </style>
 </head>
 <body>
@@ -263,11 +296,11 @@ input.peso-sl::-webkit-slider-thumb:hover{transform:scale(1.3)}
 
 <!-- Tabs -->
 <div class="tabs">
-  <button class="tab active" onclick="showPanel('calc')">📊 Calculadora</button>
-  <button class="tab" onclick="showPanel('aporte')">💰 Registrar Aporte</button>
-  <button class="tab" onclick="showPanel('hist')">📋 Histórico</button>
-  <button class="tab" onclick="showPanel('proj')">📈 Projeção Real</button>
-  <button class="tab" onclick="showPanel('config')">⚙️ Configurações</button>
+  <button class="tab active" onclick="showPanel('calc')"><span class="tab-icon">📊</span><span class="tab-label">Calculadora</span></button>
+  <button class="tab" onclick="showPanel('aporte')"><span class="tab-icon">💰</span><span class="tab-label">Aporte</span></button>
+  <button class="tab" onclick="showPanel('hist')"><span class="tab-icon">📋</span><span class="tab-label">Histórico</span></button>
+  <button class="tab" onclick="showPanel('proj')"><span class="tab-icon">📈</span><span class="tab-label">Projeção</span></button>
+  <button class="tab" onclick="showPanel('config')"><span class="tab-icon">⚙️</span><span class="tab-label">Config</span></button>
 </div>
 
 <!-- ═══════════════ PANEL: CALCULADORA ═══════════════ -->
@@ -408,7 +441,7 @@ input.peso-sl::-webkit-slider-thumb:hover{transform:scale(1.3)}
   <div class="box accent">
     <div class="sec-title">Configurações da Carteira</div>
     <div id="config-list"></div>
-    <div style="display:flex;gap:10px;margin-top:15px">
+    <div class="save-btn-row" style="display:flex;gap:10px;margin-top:15px;flex-wrap:wrap">
       <button class="save-btn" onclick="addCompany()">➕ Nova Empresa</button>
       <button class="save-btn" onclick="saveAllCompanies()">💾 Salvar Alterações</button>
     </div>
@@ -727,7 +760,7 @@ function renderHist(){
     return;
   }
 
-  const html=`<table class="hist-table">
+  const html=`<div class="hist-table-scroll"><table class="hist-table">
     <thead><tr>
       <th>Mês</th>
       ${COMPANIES.map(c=>`<th>${c.ticker}</th>`).join('')}
@@ -746,7 +779,7 @@ function renderHist(){
       </tr>`;
     }).join('')}
     </tbody>
-  </table>`;
+  </table></div>`;
   document.getElementById('hist-table-wrap').innerHTML=html;
 }
 
@@ -870,72 +903,24 @@ function renderProj(){
 
 
 function saveCompanies(){localStorage.setItem("best_companies",JSON.stringify(COMPANIES));}
-function renderConfig(){const wrap=document.getElementById("config-list");if(!wrap)return;wrap.innerHTML=COMPANIES.map((c,i)=>`<div class="box" style="margin-bottom:10px"><div class="grid2"><div class="input-group">
-  <label>Ticker da ação</label>
-  <input class="inp" value="${c.ticker}"
-         onchange="COMPANIES[${i}].ticker=this.value.toUpperCase()">
-</div>
-
-<div class="input-group">
-  <label>Nome da empresa</label>
-  <input class="inp" value="${c.name}"
-         onchange="COMPANIES[${i}].name=this.value">
-</div>
-
-<div class="input-group">
-  <label>Setor</label>
-  <input class="inp" value="${c.sector}"
-         onchange="COMPANIES[${i}].sector=this.value">
-</div>
-
-<div class="input-group">
-  <label>Dividend Yield (0.08 = 8%)</label>
-  <input class="inp" type="number" step="0.001"
-         value="${c.dy}"
-         onchange="COMPANIES[${i}].dy=parseFloat(this.value)||0">
-</div>
-
-<div class="input-group">
-  <label>Preço teto</label>
-  <input class="inp" type="number"
-         value="${c.teto}"
-         onchange="COMPANIES[${i}].teto=parseFloat(this.value)||0">
-</div>
-
-<div class="input-group">
-  <label>Peso na carteira (%)</label>
-  <input class="inp" type="number"
-         value="${c.peso}"
-         onchange="COMPANIES[${i}].peso=parseFloat(this.value)||0">
-</div>
-
-<div class="input-group">
-  <label>Cor do card</label>
-  <select class="inp"
-          onchange="COMPANIES[${i}].color=this.value">
-    <option value="green">Verde</option>
-    <option value="amber">Amarelo</option>
-    <option value="teal">Azul Claro</option>
-    <option value="purple">Roxo</option>
-  </select>
-</div>
-
-<div class="input-group">
-  <label>Nível de risco</label>
-  <select class="inp"
-          onchange="COMPANIES[${i}].risco=this.value">
-    <option value="Baixo">Baixo</option>
-    <option value="Médio">Médio</option>
-    <option value="Alto">Alto</option>
-  </select>
-</div>
-
-<div class="input-group">
-  <label>Anos pagando dividendos</label>
-  <input class="inp"
-         value="${c.anos}"
-         onchange="COMPANIES[${i}].anos=this.value">
-</div><button class="del-btn" onclick="removeCompany(${i})">Remover</button></div></div>`).join('');}
+function renderConfig(){
+  const wrap=document.getElementById("config-list");
+  if(!wrap)return;
+  wrap.innerHTML=COMPANIES.map((c,i)=>`
+    <div class="box" style="margin-bottom:10px">
+      <div style="font-family:'DM Serif Display',serif;font-size:16px;color:var(--text);margin-bottom:12px">${c.ticker} — ${c.name}</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
+        <div class="input-group"><label>Ticker</label><div class="inp-wrap"><input class="inp sm" style="padding-left:12px" value="${c.ticker}" onchange="COMPANIES[${i}].ticker=this.value"></div></div>
+        <div class="input-group"><label>Nome</label><div class="inp-wrap"><input class="inp sm" style="padding-left:12px" value="${c.name}" onchange="COMPANIES[${i}].name=this.value"></div></div>
+        <div class="input-group"><label>Setor</label><div class="inp-wrap"><input class="inp sm" style="padding-left:12px" value="${c.sector}" onchange="COMPANIES[${i}].sector=this.value"></div></div>
+        <div class="input-group"><label>DY (ex: 0.078)</label><div class="inp-wrap"><input class="inp sm" style="padding-left:12px" type="number" step="0.001" value="${c.dy}" onchange="COMPANIES[${i}].dy=parseFloat(this.value)||0"></div></div>
+        <div class="input-group"><label>Preço teto (R$)</label><div class="inp-wrap"><span class="inp-pre">R$</span><input class="inp sm" type="number" value="${c.teto}" onchange="COMPANIES[${i}].teto=parseFloat(this.value)||0"></div></div>
+        <div class="input-group"><label>Peso inicial (%)</label><div class="inp-wrap"><input class="inp sm" style="padding-left:12px" type="number" value="${c.peso}" onchange="COMPANIES[${i}].peso=parseInt(this.value)||10"></div></div>
+      </div>
+      <button class="del-btn" style="font-size:12px;padding:6px 14px" onclick="removeCompany(${i})">🗑 Remover empresa</button>
+    </div>
+  `).join('');
+}
 function addCompany(){COMPANIES.push({ticker:'NOVA3',name:'Nova Empresa',sector:'Setor',color:'green',dy:0.08,teto:0,peso:10,risco:'Médio',anos:'0 anos'});renderConfig();}
 function removeCompany(i){if(confirm('Remover empresa?')){COMPANIES.splice(i,1);renderConfig();}}
 function saveAllCompanies(){saveCompanies();pesos=COMPANIES.map(c=>c.peso||10);enabled=COMPANIES.map(()=>true);buildCompanyCards();renderAportePanel();updateCalc();alert('Alterações salvas');}
