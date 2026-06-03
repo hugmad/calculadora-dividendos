@@ -425,15 +425,26 @@ let aportes = {}; // {  'YYYY-MM': { TAEE11:X, BBSE3:X, CMIG4:X, VIVT3:X } }
 // ─── STORAGE ─────────────────────────────────────────────
 async function loadData(){
   try {
-    const r = await window.storage.get(STORAGE_KEY);
-    if(r && r.value) aportes = JSON.parse(r.value);
-  } catch(e){ aportes={}; }
+    const r = localStorage.getItem(STORAGE_KEY);
+
+    if(r){
+      aportes = JSON.parse(r);
+    }
+  } catch(e){
+    console.error(e);
+    aportes = {};
+  }
 }
 
 async function saveData(){
   try {
-    await window.storage.set(STORAGE_KEY, JSON.stringify(aportes));
-  } catch(e){ console.error('Storage error',e); }
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify(aportes)
+    );
+  } catch(e){
+    console.error('Storage error', e);
+  }
 }
 
 // ─── UTILS ───────────────────────────────────────────────
