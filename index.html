@@ -881,7 +881,7 @@ document.getElementById('fixas-input').addEventListener('input',updateCalc);
 <script>
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js')
+    navigator.serviceWorker.register('/calculadora-dividendos/sw.js')
       .then(reg => console.log('[PWA] Service Worker registrado:', reg.scope))
       .catch(err => console.log('[PWA] Erro SW:', err));
   });
