@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Dividendos">
+  <meta name="theme-color" content="#00E5A0">
+  <meta name="msapplication-TileColor" content="#0A0E17">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora de Investimento — Dividendos BEST</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=Sora:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg:#0A0E17;--bg2:#111827;--bg3:#1A2235;--bg4:#222f45;
+  --border:rgba(255,255,255,0.08);--border2:rgba(255,255,255,0.14);
+  --text:#F0F4FF;--text2:#8A97B5;--text3:#4A5568;
+  --green:#00E5A0;--green-dim:rgba(0,229,160,0.1);
+  --amber:#FFB020;--amber-dim:rgba(255,176,32,0.1);
+  --blue:#4D9FFF;--blue-dim:rgba(77,159,255,0.1);
+  --purple:#A78BFA;--purple-dim:rgba(167,139,250,0.1);
+  --teal:#00CEC9;--teal-dim:rgba(0,206,201,0.1);
+  --red:#FF5C5C;--red-dim:rgba(255,92,92,0.1);
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Sora',sans-serif;min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(ellipse 80% 50% at 20% 0%,rgba(0,229,160,.06) 0%,transparent 60%),
+            radial-gradient(ellipse 60% 40% at 80% 100%,rgba(77,159,255,.05) 0%,transparent 60%)}
+.container{max-width:980px;margin:0 auto;padding:48px 24px 80px;position:relative;z-index:1}
+
+/* ── Header ─────────────────────────────────────────── */
+.header{text-align:center;margin-bottom:48px;animation:fadeUp .6s ease both}
+.eyebrow{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.2em;color:var(--green);text-transform:uppercase;margin-bottom:12px;opacity:.8}
+.header h1{font-family:'DM Serif Display',serif;font-size:clamp(26px,4vw,42px);font-weight:400;line-height:1.15;margin-bottom:10px}
+.header h1 em{font-style:italic;color:var(--green)}
+.header p{font-size:14px;color:var(--text2);max-width:520px;margin:0 auto;line-height:1.7}
+
+/* ── Tabs ────────────────────────────────────────────── */
+.tabs{display:flex;gap:6px;background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:6px;margin-bottom:32px;animation:fadeUp .6s .05s ease both}
+.tab{flex:1;padding:10px 8px;text-align:center;font-size:13px;font-family:'DM Mono',monospace;color:var(--text2);border-radius:10px;cursor:pointer;transition:all .2s;border:none;background:transparent}
+.tab.active{background:var(--bg3);color:var(--text);border:1px solid var(--border2)}
+.tab:hover:not(.active){color:var(--text);background:rgba(255,255,255,.04)}
+
+/* ── Panels ──────────────────────────────────────────── */
+.panel{display:none;animation:fadeUp .4s ease both}
+.panel.active{display:block}
+
+/* ── Section titles ──────────────────────────────────── */
+.sec-title{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.15em;color:var(--text2);text-transform:uppercase;margin-bottom:16px}
+
+/* ── Cards / containers ──────────────────────────────── */
+.box{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:28px;margin-bottom:24px}
+.box.accent{border-color:var(--border2)}
+
+/* ── Input helpers ───────────────────────────────────── */
+.input-group{display:flex;flex-direction:column;gap:7px}
+.input-group label{font-size:12px;color:var(--text2)}
+.inp-wrap{position:relative;display:flex;align-items:center}
+.inp-pre{position:absolute;left:14px;font-family:'DM Mono',monospace;font-size:13px;color:var(--text2);pointer-events:none;z-index:1}
+input[type="number"]{-webkit-appearance:none;appearance:none}
+.inp{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:12px 14px 12px 42px;font-family:'DM Mono',monospace;font-size:17px;font-weight:500;color:var(--text);outline:none;transition:border-color .2s,box-shadow .2s}
+.inp:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(0,229,160,.12)}
+.inp::-webkit-inner-spin-button,.inp::-webkit-outer-spin-button{-webkit-appearance:none}
+.inp.sm{font-size:14px;padding:10px 12px 10px 38px}
+input[type="range"]{-webkit-appearance:none;width:100%;height:4px;background:var(--bg3);border-radius:2px;outline:none;cursor:pointer}
+input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--green);box-shadow:0 0 10px rgba(0,229,160,.5);cursor:pointer;transition:transform .15s}
+input[type="range"]::-webkit-slider-thumb:hover{transform:scale(1.2)}
+
+/* ── Grid helpers ────────────────────────────────────── */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.grid4{display:grid;grid-template-columns:repeat(auto-fit,minmax(195px,1fr));gap:14px}
+
+/* ── Summary metrics ─────────────────────────────────── */
+.metric{background:var(--bg3);border-radius:14px;padding:16px;text-align:center}
+.metric-label{font-size:11px;color:var(--text2);font-family:'DM Mono',monospace;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px}
+.metric-val{font-family:'DM Mono',monospace;font-size:20px;font-weight:500;color:var(--text)}
+.metric-val.green{color:var(--green)}
+.metric-val.amber{color:var(--amber)}
+.metric-val.teal{color:var(--teal)}
+.metric-val.purple{color:var(--purple)}
+
+/* ── Slider display ──────────────────────────────────── */
+.slider-display{text-align:center;font-family:'DM Mono',monospace;font-size:30px;font-weight:500;color:var(--green);margin-bottom:6px}
+.slider-labels{display:flex;justify-content:space-between;font-size:11px;color:var(--text3);font-family:'DM Mono',monospace;margin-top:6px}
+
+/* ── Reserva bar ─────────────────────────────────────── */
+.res-bar{display:flex;align-items:center;gap:10px;background:var(--amber-dim);border:1px solid rgba(255,176,32,.2);border-radius:10px;padding:10px 14px;font-size:12px;color:var(--amber);margin-top:16px;transition:all .3s}
+.res-bar.ok{background:var(--green-dim);border-color:rgba(0,229,160,.2);color:var(--green)}
+
+/* ── Tesouro banner ──────────────────────────────────── */
+.tesouro-banner{display:none;align-items:center;gap:12px;background:rgba(255,176,32,.07);border:1px solid rgba(255,176,32,.25);border-radius:14px;padding:14px 18px;margin-bottom:20px;font-size:13px;color:var(--amber)}
+.tesouro-banner.show{display:flex}
+
+/* ── Company cards ───────────────────────────────────── */
+.ccard{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:22px;position:relative;overflow:hidden;transition:border-color .3s,transform .2s,opacity .3s}
+.ccard:hover:not(.disabled){transform:translateY(-2px)}
+.ccard::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;border-radius:20px 20px 0 0}
+.ccard[data-c="green"]{border-color:rgba(0,229,160,.2)} .ccard[data-c="green"]::before{background:var(--green)}
+.ccard[data-c="amber"]{border-color:rgba(255,176,32,.2)} .ccard[data-c="amber"]::before{background:var(--amber)}
+.ccard[data-c="teal"] {border-color:rgba(0,206,201,.2)}  .ccard[data-c="teal"]::before{background:var(--teal)}
+.ccard[data-c="purple"]{border-color:rgba(167,139,250,.2)}.ccard[data-c="purple"]::before{background:var(--purple)}
+.ccard.disabled{opacity:.4;border-color:rgba(255,92,92,.3)!important}
+.ccard.disabled::before{background:var(--red)!important}
+.ccard.disabled .alloc-val{color:var(--text3)!important}
+.ccard.disabled .pfill{background:var(--text3)!important}
+.ccard.disabled .peso-sl{pointer-events:none;opacity:.3}
+.dis-ov{display:none;position:absolute;inset:0;background:rgba(10,14,23,.55);border-radius:20px;align-items:center;justify-content:center;flex-direction:column;gap:5px;pointer-events:none;z-index:2}
+.ccard.disabled .dis-ov{display:flex}
+.dis-label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.1em;color:var(--red);text-transform:uppercase}
+
+.tog-btn{display:flex;align-items:center;gap:5px;margin-bottom:14px;background:transparent;border:1px solid var(--border);border-radius:7px;padding:4px 9px;cursor:pointer;font-size:11px;font-family:'DM Mono',monospace;color:var(--text2);transition:all .2s;width:fit-content}
+.tog-btn:hover{border-color:var(--red);color:var(--red)}
+.ccard.disabled .tog-btn{border-color:rgba(0,229,160,.3);color:var(--green)}
+.tog-dot{width:7px;height:7px;border-radius:50%;background:var(--green)}
+.ccard.disabled .tog-dot{background:var(--red)}
+
+.c-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px}
+.c-ticker{font-family:'DM Serif Display',serif;font-size:21px;color:var(--text)}
+.c-sector{font-size:10px;font-family:'DM Mono',monospace;padding:3px 9px;border-radius:20px;letter-spacing:.05em;text-transform:uppercase}
+[data-c="green"] .c-sector{background:var(--green-dim);color:var(--green)}
+[data-c="amber"] .c-sector{background:var(--amber-dim);color:var(--amber)}
+[data-c="teal"]  .c-sector{background:var(--teal-dim);color:var(--teal)}
+[data-c="purple"].c-sector{background:var(--purple-dim);color:var(--purple)}
+.c-name{font-size:12px;color:var(--text2);margin-bottom:16px}
+
+.alloc-val{font-family:'DM Mono',monospace;font-size:24px;font-weight:500;margin-bottom:3px;transition:all .3s cubic-bezier(.34,1.56,.64,1)}
+[data-c="green"] .alloc-val{color:var(--green)}
+[data-c="amber"] .alloc-val{color:var(--amber)}
+[data-c="teal"]  .alloc-val{color:var(--teal)}
+[data-c="purple"].alloc-val{color:var(--purple)}
+.alloc-lbl{font-size:11px;color:var(--text2);margin-bottom:14px;font-family:'DM Mono',monospace}
+
+.pbar{background:var(--bg3);border-radius:4px;height:4px;overflow:hidden;margin-bottom:12px}
+.pfill{height:100%;border-radius:4px;transition:width .4s cubic-bezier(.34,1.56,.64,1)}
+[data-c="green"] .pfill{background:var(--green)}
+[data-c="amber"] .pfill{background:var(--amber)}
+[data-c="teal"]  .pfill{background:var(--teal)}
+[data-c="purple"].pfill{background:var(--purple)}
+
+.cstats{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:14px}
+.cstat{background:var(--bg3);border-radius:9px;padding:7px 9px}
+.cstat-lbl{font-size:10px;color:var(--text3);font-family:'DM Mono',monospace;margin-bottom:1px;text-transform:uppercase;letter-spacing:.04em}
+.cstat-val{font-family:'DM Mono',monospace;font-size:12px;color:var(--text2);font-weight:500}
+.cstat-val.hi{color:var(--text)}
+
+.peso-grp{padding-top:14px;border-top:1px solid var(--border)}
+.peso-row{display:flex;justify-content:space-between;margin-bottom:7px}
+.peso-lbl{font-size:11px;color:var(--text2);font-family:'DM Mono',monospace}
+.peso-pct{font-size:12px;font-family:'DM Mono',monospace;font-weight:500}
+[data-c="green"] .peso-pct{color:var(--green)}
+[data-c="amber"] .peso-pct{color:var(--amber)}
+[data-c="teal"]  .peso-pct{color:var(--teal)}
+[data-c="purple"].peso-pct{color:var(--purple)}
+input.peso-sl{width:100%;height:3px;-webkit-appearance:none;background:var(--bg3);border-radius:2px;outline:none;cursor:pointer}
+[data-c="green"] input.peso-sl::-webkit-slider-thumb{background:var(--green)}
+[data-c="amber"] input.peso-sl::-webkit-slider-thumb{background:var(--amber)}
+[data-c="teal"]  input.peso-sl::-webkit-slider-thumb{background:var(--teal)}
+[data-c="purple"]input.peso-sl::-webkit-slider-thumb{background:var(--purple)}
+input.peso-sl::-webkit-slider-thumb{-webkit-appearance:none;width:15px;height:15px;border-radius:50%;cursor:pointer;transition:transform .15s}
+input.peso-sl::-webkit-slider-thumb:hover{transform:scale(1.3)}
+
+/* ── Dividendo section ───────────────────────────────── */
+.div-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
+.div-card{background:var(--bg3);border-radius:12px;padding:14px;text-align:center;transition:opacity .3s}
+.div-card.disabled{opacity:.3}
+.div-ticker{font-family:'DM Mono',monospace;font-size:12px;color:var(--text2);margin-bottom:5px}
+.div-val{font-family:'DM Mono',monospace;font-size:18px;font-weight:500;color:var(--green);margin-bottom:2px}
+.div-sub{font-size:10px;color:var(--text3);font-family:'DM Mono',monospace}
+.div-total-row{display:flex;justify-content:space-between;align-items:center;margin-top:18px;padding-top:18px;border-top:1px solid var(--border)}
+.div-total-val{font-family:'DM Serif Display',serif;font-size:30px;color:var(--green)}
+
+/* ── Pie ─────────────────────────────────────────────── */
+.pie-wrap-outer{display:flex;align-items:center;gap:28px}
+.pie-canvas-wrap{flex-shrink:0;position:relative;width:130px;height:130px}
+.pie-canvas-wrap canvas{position:absolute;inset:0}
+.pie-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;pointer-events:none}
+.pie-center-lbl{font-size:10px;color:var(--text2);font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.04em}
+.pie-center-val{font-family:'DM Mono',monospace;font-size:14px;font-weight:500;color:var(--text)}
+.pie-legend{flex:1;display:flex;flex-direction:column;gap:9px}
+.pie-leg-item{display:flex;align-items:center;justify-content:space-between;transition:opacity .3s}
+.pie-leg-item.disabled{opacity:.3}
+.pie-leg-left{display:flex;align-items:center;gap:7px}
+.pie-dot{width:9px;height:9px;border-radius:2px;flex-shrink:0}
+.pie-name{font-size:13px;color:var(--text2)}
+.pie-pct{font-family:'DM Mono',monospace;font-size:13px;font-weight:500;color:var(--text)}
+
+/* ── APORTE PANEL ────────────────────────────────────── */
+.month-selector{display:flex;align-items:center;gap:10px;margin-bottom:20px}
+.month-selector select{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:9px 14px;font-family:'DM Mono',monospace;font-size:13px;color:var(--text);outline:none;cursor:pointer;flex:1}
+.month-selector select:focus{border-color:var(--green)}
+.save-btn{background:var(--green);color:#0A0E17;border:none;border-radius:10px;padding:10px 20px;font-family:'DM Mono',monospace;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap}
+.save-btn:hover{background:#00ffb3;transform:translateY(-1px)}
+.save-btn:active{transform:scale(.97)}
+.save-btn.saved{background:var(--blue);color:#fff}
+
+.aporte-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:20px}
+.aporte-card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:18px}
+.aporte-card::before{display:block;font-family:'DM Serif Display',serif;font-size:16px;margin-bottom:3px}
+.aporte-ticker{font-family:'DM Serif Display',serif;font-size:16px;color:var(--text);margin-bottom:2px}
+.aporte-name{font-size:11px;color:var(--text2);margin-bottom:12px}
+.aporte-card[data-c="green"]{border-color:rgba(0,229,160,.2)}
+.aporte-card[data-c="amber"]{border-color:rgba(255,176,32,.2)}
+.aporte-card[data-c="teal"] {border-color:rgba(0,206,201,.2)}
+.aporte-card[data-c="purple"]{border-color:rgba(167,139,250,.2)}
+
+/* ── History table ───────────────────────────────────── */
+.hist-table{width:100%;border-collapse:collapse;font-size:13px}
+.hist-table th{text-align:left;font-size:10px;font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.08em;color:var(--text3);padding:0 10px 10px}
+.hist-table td{padding:11px 10px;border-top:1px solid var(--border);color:var(--text2);vertical-align:middle;font-family:'DM Mono',monospace;font-size:12px}
+.hist-table tr:last-child td{border-bottom:1px solid var(--border)}
+.hist-table td:first-child{color:var(--text);font-weight:500}
+.del-btn{background:transparent;border:1px solid rgba(255,92,92,.3);color:var(--red);border-radius:6px;padding:3px 8px;font-size:10px;cursor:pointer;transition:all .2s;font-family:'DM Mono',monospace}
+.del-btn:hover{background:var(--red-dim);border-color:var(--red)}
+
+/* ── Projection panel ────────────────────────────────── */
+.chart-wrap{position:relative;width:100%;height:260px}
+.chart-wrap-sm{position:relative;width:100%;height:200px}
+
+/* ── Totals bar ──────────────────────────────────────── */
+.totals-bar{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:24px}
+
+/* ── Loading / empty ─────────────────────────────────── */
+.loading{text-align:center;padding:40px;color:var(--text2);font-size:13px;font-family:'DM Mono',monospace}
+.empty{text-align:center;padding:32px;color:var(--text3);font-size:13px;font-family:'DM Mono',monospace}
+
+/* ── Badges ──────────────────────────────────────────── */
+.badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-family:'DM Mono',monospace;padding:3px 8px;border-radius:6px}
+.badge.ok{background:var(--green-dim);color:var(--green);border:1px solid rgba(0,229,160,.2)}
+.badge.warn{background:var(--amber-dim);color:var(--amber);border:1px solid rgba(255,176,32,.2)}
+
+/* ── Animations ──────────────────────────────────────── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.pulse{animation:pulse .25s ease}
+@keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.05)}100%{transform:scale(1)}}
+
+/* ── Responsive ──────────────────────────────────────── */
+@media(max-width:620px){
+  .grid2,.grid3{grid-template-columns:1fr}
+  .pie-wrap-outer{flex-direction:column}
+  .month-selector{flex-direction:column}
+  .save-btn{width:100%}
+}
+@media(max-width:440px){.aporte-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- Header -->
+<div class="header">
+  <div class="eyebrow">Método BEST · Carteira de Dividendos</div>
+  <h1>Calculadora de<br><em>Investimento Real</em></h1>
+  <p>Registre seus aportes mensais reais, acompanhe o crescimento da carteira e visualize os dividendos acumulados.</p>
+</div>
+
+<!-- Tabs -->
+<div class="tabs">
+  <button class="tab active" onclick="showPanel('calc')">📊 Calculadora</button>
+  <button class="tab" onclick="showPanel('aporte')">💰 Registrar Aporte</button>
+  <button class="tab" onclick="showPanel('hist')">📋 Histórico</button>
+  <button class="tab" onclick="showPanel('proj')">📈 Projeção Real</button>
+</div>
+
+<!-- ═══════════════ PANEL: CALCULADORA ═══════════════ -->
+<div class="panel active" id="panel-calc">
+
+  <div class="box accent">
+    <span class="sec-title">Sua renda este mês</span>
+    <div class="slider-display">R$ <span id="slider-val">6.000</span></div>
+    <input type="range" id="renda-slider" min="1000" max="15000" step="500" value="6000" style="margin-bottom:4px">
+    <div class="slider-labels"><span>R$ 1.000</span><span>R$ 15.000</span></div>
+    <div style="margin-top:16px" class="grid2">
+      <div class="input-group">
+        <label>Ou digite o valor exato</label>
+        <div class="inp-wrap"><span class="inp-pre">R$</span><input type="number" class="inp" id="renda-input" value="6000" min="1000" max="100000"></div>
+      </div>
+      <div class="input-group">
+        <label>Contas fixas mensais</label>
+        <div class="inp-wrap"><span class="inp-pre">R$</span><input type="number" class="inp" id="fixas-input" value="2500" min="0" max="50000"></div>
+      </div>
+    </div>
+    <div class="res-bar" id="res-bar">
+      <span>⚠️</span><span id="res-text">Verifique se você já tem R$7.500 de reserva de emergência.</span>
+    </div>
+  </div>
+
+  <div class="grid3" style="margin-bottom:24px">
+    <div class="metric"><div class="metric-label">Sobra líquida</div><div class="metric-val" id="sobra-val">—</div></div>
+    <div class="metric"><div class="metric-label">Para investir</div><div class="metric-val green" id="inv-val">—</div></div>
+    <div class="metric"><div class="metric-label">Reserva pessoal</div><div class="metric-val amber" id="res-val">—</div></div>
+  </div>
+
+  <div class="tesouro-banner" id="tesouro-banner">
+    <span style="font-size:20px">🏦</span>
+    <div><div style="font-size:12px;margin-bottom:3px">Empresas desativadas — valor para:</div>
+    <div><strong>Tesouro Selic</strong> · <span id="tesouro-amt">R$ 0</span> aguardando correção de preço</div></div>
+  </div>
+
+  <div class="sec-title">Alocação por empresa — desative se estiver acima do teto</div>
+  <div class="grid4" id="ccards-wrap">
+    <!-- cards injected by JS -->
+  </div>
+
+  <div class="box">
+    <div class="sec-title">💰 Dividendo estimado — primeiro trimestre</div>
+    <div class="div-grid" id="div-grid"></div>
+    <div class="div-total-row">
+      <span style="font-size:13px;color:var(--text2)">Total estimado este trimestre</span>
+      <span class="div-total-val" id="div-total">R$ 0</span>
+    </div>
+  </div>
+
+  <div class="box">
+    <div class="sec-title">Distribuição do aporte</div>
+    <div class="pie-wrap-outer">
+      <div class="pie-canvas-wrap">
+        <canvas id="pie-chart" width="130" height="130"></canvas>
+        <div class="pie-center">
+          <div class="pie-center-lbl">Aporte</div>
+          <div class="pie-center-val" id="pie-center">R$ 0</div>
+        </div>
+      </div>
+      <div class="pie-legend" id="pie-legend"></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════ PANEL: REGISTRAR APORTE ═══════════════ -->
+<div class="panel" id="panel-aporte">
+
+  <div class="box accent">
+    <div class="sec-title">Registrar aporte mensal</div>
+    <div class="month-selector">
+      <select id="aporte-mes"></select>
+      <button class="save-btn" id="save-btn" onclick="saveAporte()">💾 Salvar aporte</button>
+    </div>
+
+    <div class="aporte-grid" id="aporte-grid">
+      <!-- injected by JS -->
+    </div>
+
+    <div style="background:var(--bg3);border-radius:12px;padding:14px 16px;font-size:12px;color:var(--text2);line-height:1.7">
+      💡 <strong style="color:var(--text)">Dica:</strong> coloque o valor real que você investiu em cada empresa este mês.
+      Se não investiu em alguma, deixe em <strong style="color:var(--text)">R$ 0</strong>.
+      Os dados ficam salvos e atualizam automaticamente o histórico e a projeção real.
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════ PANEL: HISTÓRICO ═══════════════ -->
+<div class="panel" id="panel-hist">
+
+  <div class="totals-bar" id="totals-bar">
+    <div class="metric"><div class="metric-label">Total investido</div><div class="metric-val green" id="total-inv">R$ 0</div></div>
+    <div class="metric"><div class="metric-label">Dividendos estimados/ano</div><div class="metric-val amber" id="total-div-ano">R$ 0</div></div>
+    <div class="metric"><div class="metric-label">Meses registrados</div><div class="metric-val teal" id="total-meses">0</div></div>
+    <div class="metric"><div class="metric-label">DY médio carteira</div><div class="metric-val purple" id="dy-medio">0%</div></div>
+  </div>
+
+  <div class="box">
+    <div class="sec-title">Alocação acumulada por empresa</div>
+    <div class="div-grid" id="acum-grid"></div>
+  </div>
+
+  <div class="box">
+    <div class="sec-title">Aportes mensais registrados</div>
+    <div id="hist-table-wrap"><div class="empty">Nenhum aporte registrado ainda.</div></div>
+  </div>
+
+</div>
+
+<!-- ═══════════════ PANEL: PROJEÇÃO REAL ═══════════════ -->
+<div class="panel" id="panel-proj">
+
+  <div class="totals-bar" id="proj-totals-bar">
+    <div class="metric"><div class="metric-label">Patrimônio atual</div><div class="metric-val green" id="proj-patrim">R$ 0</div></div>
+    <div class="metric"><div class="metric-label">Dividendo mensal atual</div><div class="metric-val amber" id="proj-div-mes">R$ 0</div></div>
+    <div class="metric"><div class="metric-label">Aporte médio mensal</div><div class="metric-val teal" id="proj-aporte-med">R$ 0</div></div>
+    <div class="metric"><div class="metric-label">Meta (R$2.500/mês div.)</div><div class="metric-val purple" id="proj-eta">—</div></div>
+  </div>
+
+  <div class="box">
+    <div class="sec-title">📈 Evolução real do patrimônio</div>
+    <div class="chart-wrap"><canvas id="real-chart"></canvas></div>
+  </div>
+
+  <div class="box">
+    <div class="sec-title">🔮 Projeção futura — com aporte médio</div>
+    <div class="chart-wrap-sm"><canvas id="fut-chart"></canvas></div>
+    <p style="font-size:11px;color:var(--text3);margin-top:10px;font-family:'DM Mono',monospace">* Projeção com DY médio de 7% a.a. e reinvestimento total dos dividendos.</p>
+  </div>
+
+</div>
+
+</div><!-- /container -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+// ─── CONSTANTS ───────────────────────────────────────────
+const COMPANIES = [
+  {ticker:'TAEE11',name:'Transmissão Paulista',sector:'Energia',   color:'green', dy:0.078, teto:42,   peso:35, risco:'Baixo',  anos:'9 anos'},
+  {ticker:'BBSE3', name:'BB Seguridade',       sector:'Seguros',   color:'amber', dy:0.072, teto:38,   peso:25, risco:'Baixo',  anos:'8 anos'},
+  {ticker:'CMIG4', name:'Cemig PN',            sector:'Energia',   color:'teal',  dy:0.1174,teto:14,   peso:20, risco:'Médio',  anos:'7 anos'},
+  {ticker:'VIVT3', name:'Telefônica Vivo',     sector:'Telecom',   color:'purple',dy:0.061, teto:55,   peso:20, risco:'Médio',  anos:'6 anos'},
+];
+const COLORS_MAP = {green:'#00E5A0',amber:'#FFB020',teal:'#00CEC9',purple:'#A78BFA'};
+const STORAGE_KEY = 'best_aportes_v2';
+
+// ─── STATE ───────────────────────────────────────────────
+let pesos   = COMPANIES.map(c=>c.peso);
+let enabled = COMPANIES.map(()=>true);
+let pieChart=null, realChart=null, futChart=null;
+let aportes = {}; // {  'YYYY-MM': { TAEE11:X, BBSE3:X, CMIG4:X, VIVT3:X } }
+
+// ─── STORAGE ─────────────────────────────────────────────
+async function loadData(){
+  try {
+    const r = await window.storage.get(STORAGE_KEY);
+    if(r && r.value) aportes = JSON.parse(r.value);
+  } catch(e){ aportes={}; }
+}
+
+async function saveData(){
+  try {
+    await window.storage.set(STORAGE_KEY, JSON.stringify(aportes));
+  } catch(e){ console.error('Storage error',e); }
+}
+
+// ─── UTILS ───────────────────────────────────────────────
+function fmtBR(n){ return 'R$ '+Math.round(n).toLocaleString('pt-BR'); }
+function fmtBRDec(n){ return 'R$ '+n.toFixed(2).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g,'.'); }
+function ym(d){ return d.toISOString().slice(0,7); }
+function ymLabel(s){ const [y,m]=s.split('-'); const names=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez']; return names[parseInt(m)-1]+'/'+y.slice(2); }
+
+function getMonthOptions(){
+  const opts=[];
+  const now=new Date();
+  for(let i=0;i<24;i++){
+    const d=new Date(now.getFullYear(), now.getMonth()-i, 1);
+    opts.push(ym(d));
+  }
+  return opts;
+}
+
+// ─── TABS ─────────────────────────────────────────────────
+function showPanel(id){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  const idx={calc:0,aporte:1,hist:2,proj:3}[id];
+  document.querySelectorAll('.tab')[idx].classList.add('active');
+  if(id==='hist')   renderHist();
+  if(id==='proj')   renderProj();
+  if(id==='aporte') renderAportePanel();
+}
+
+// ─── CALCULADORA ─────────────────────────────────────────
+function getCalcValues(){
+  const renda  = parseFloat(document.getElementById('renda-input').value)||0;
+  const fixas  = parseFloat(document.getElementById('fixas-input').value)||0;
+  const sobra  = Math.max(0,renda-fixas);
+  const inv    = sobra*0.75;
+  const res    = sobra-inv;
+  return {renda,fixas,sobra,inv,res};
+}
+
+function normPesos(){
+  const active = pesos.map((p,i)=>enabled[i]?p:0);
+  const total  = active.reduce((a,b)=>a+b,0);
+  if(!total) return active.map(()=>0);
+  return active.map(p=>p/total);
+}
+
+function buildCompanyCards(){
+  const wrap = document.getElementById('ccards-wrap');
+  wrap.innerHTML = COMPANIES.map((c,i)=>`
+    <div class="ccard" data-c="${c.color}" data-idx="${i}" style="animation:fadeUp .5s ${0.1+i*.05}s ease both">
+      <div class="dis-ov"><span style="font-size:26px">🚫</span><span class="dis-label">Acima do teto</span></div>
+      <button class="tog-btn" onclick="toggleCo(${i})"><span class="tog-dot"></span><span class="tog-txt">Ativa</span></button>
+      <div class="c-head">
+        <span class="c-ticker">${c.ticker}</span>
+        <span class="c-sector">${c.sector}</span>
+      </div>
+      <div class="c-name">${c.name}</div>
+      <div class="alloc-val" id="alloc-${i}">R$ 0</div>
+      <div class="alloc-lbl">alocação estimada</div>
+      <div class="pbar"><div class="pfill" id="prog-${i}" style="width:${c.peso}%"></div></div>
+      <div class="cstats">
+        <div class="cstat"><div class="cstat-lbl">DY médio</div><div class="cstat-val hi">${(c.dy*100).toFixed(1).replace('.',',')}% a.a.</div></div>
+        <div class="cstat"><div class="cstat-lbl">Consistência</div><div class="cstat-val hi">${c.anos}</div></div>
+        <div class="cstat"><div class="cstat-lbl">Preço teto</div><div class="cstat-val">R$ ${c.teto.toFixed(2).replace('.',',')}</div></div>
+        <div class="cstat"><div class="cstat-lbl">Risco</div><div class="cstat-val" style="color:${c.risco==='Baixo'?'var(--green)':'var(--amber)'}">${c.risco}</div></div>
+      </div>
+      <div class="peso-grp">
+        <div class="peso-row"><span class="peso-lbl">Peso na carteira</span><span class="peso-pct" id="ppct-${i}">${c.peso}%</span></div>
+        <input type="range" class="peso-sl" id="peso-${i}" min="0" max="100" value="${c.peso}" oninput="setPeso(${i},this.value)">
+      </div>
+    </div>
+  `).join('');
+
+  // div cards
+  document.getElementById('div-grid').innerHTML = COMPANIES.map((c,i)=>`
+    <div class="div-card" id="div-card-${i}">
+      <div class="div-ticker">${c.ticker}</div>
+      <div class="div-val" id="div-${i}">R$ 0</div>
+      <div class="div-sub">DY ${(c.dy*100).toFixed(2).replace('.',',')}% a.a.</div>
+    </div>
+  `).join('');
+}
+
+function toggleCo(idx){
+  enabled[idx]=!enabled[idx];
+  const card=document.querySelector(`.ccard[data-idx="${idx}"]`);
+  const txt=card.querySelector('.tog-txt');
+  card.classList.toggle('disabled',!enabled[idx]);
+  txt.textContent=enabled[idx]?'Ativa':'Reativar';
+  updateCalc();
+}
+
+function setPeso(idx,val){
+  pesos[idx]=parseInt(val);
+  updateCalc();
+}
+
+function updateCalc(){
+  const {renda,sobra,inv,res}=getCalcValues();
+
+  // slider
+  document.getElementById('slider-val').textContent=
+    (parseFloat(document.getElementById('renda-slider').value)||0).toLocaleString('pt-BR');
+
+  document.getElementById('sobra-val').textContent=fmtBR(sobra);
+  document.getElementById('inv-val').textContent=fmtBR(inv);
+  document.getElementById('res-val').textContent=fmtBR(res);
+
+  const bar=document.getElementById('res-bar');
+  document.getElementById('res-text').textContent=renda>=4000
+    ?'✓ Com esta renda você consegue investir e guardar parte para emergências.'
+    :'Renda baixa — priorize a reserva de emergência de R$7.500.';
+  bar.className='res-bar'+(renda>=4000?' ok':'');
+
+  const norm=normPesos();
+  const allocs=norm.map(p=>inv*p);
+  const divs=allocs.map((a,i)=>a*COMPANIES[i].dy/4);
+  const divTotal=divs.reduce((a,b)=>a+b,0);
+
+  // tesouro
+  const rawTotal=pesos.reduce((a,b)=>a+b,0);
+  const disAmt=rawTotal>0?pesos.map((p,i)=>enabled[i]?0:p).reduce((a,b)=>a+b,0)/rawTotal*inv:0;
+  const tb=document.getElementById('tesouro-banner');
+  if(disAmt>0){tb.classList.add('show');document.getElementById('tesouro-amt').textContent=fmtBR(disAmt);}
+  else tb.classList.remove('show');
+
+  COMPANIES.forEach((_,i)=>{
+    const el=document.getElementById('alloc-'+i);
+    el.textContent=enabled[i]?fmtBR(allocs[i]):'R$ 0';
+    el.classList.remove('pulse');void el.offsetWidth;el.classList.add('pulse');
+    document.getElementById('prog-'+i).style.width=(norm[i]*100).toFixed(1)+'%';
+    document.getElementById('div-'+i).textContent=enabled[i]?fmtBR(divs[i]):'R$ 0';
+    document.getElementById('div-card-'+i).classList.toggle('disabled',!enabled[i]);
+  });
+
+  document.getElementById('div-total').textContent=fmtBR(divTotal);
+  document.getElementById('pie-center').textContent=fmtBR(inv);
+
+  // peso pct labels
+  COMPANIES.forEach((_,i)=>{
+    document.getElementById('ppct-'+i).textContent=
+      rawTotal>0?Math.round(pesos[i]/rawTotal*100)+'%':'0%';
+  });
+
+  updatePie(allocs);
+  updatePieLegend(norm);
+}
+
+function updatePie(allocs){
+  const ctx=document.getElementById('pie-chart').getContext('2d');
+  const data=allocs.map((a,i)=>enabled[i]?Math.round(a):0);
+  const bg=COMPANIES.map((c,i)=>enabled[i]?COLORS_MAP[c.color]+'CC':'#ffffff18');
+  const bc=COMPANIES.map((c,i)=>enabled[i]?COLORS_MAP[c.color]:'#ffffff30');
+  if(pieChart){
+    pieChart.data.datasets[0].data=data;
+    pieChart.data.datasets[0].backgroundColor=bg;
+    pieChart.data.datasets[0].borderColor=bc;
+    pieChart.update('none');return;
+  }
+  pieChart=new Chart(ctx,{
+    type:'doughnut',
+    data:{labels:COMPANIES.map(c=>c.ticker),datasets:[{data,backgroundColor:bg,borderColor:bc,borderWidth:1.5,hoverOffset:5}]},
+    options:{responsive:false,cutout:'62%',plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>fmtBR(c.parsed)}}},animation:{duration:350}}
+  });
+}
+
+function updatePieLegend(norm){
+  document.getElementById('pie-legend').innerHTML=COMPANIES.map((c,i)=>`
+    <div class="pie-leg-item${enabled[i]?'':' disabled'}">
+      <div class="pie-leg-left">
+        <div class="pie-dot" style="background:${enabled[i]?COLORS_MAP[c.color]:'#4A5568'}"></div>
+        <span class="pie-name">${c.ticker}</span>
+      </div>
+      <span class="pie-pct">${enabled[i]?Math.round(norm[i]*100)+'%':'—'}</span>
+    </div>`).join('');
+}
+
+// ─── APORTE PANEL ─────────────────────────────────────────
+function renderAportePanel(){
+  // populate month selector
+  const sel=document.getElementById('aporte-mes');
+  const opts=getMonthOptions();
+  sel.innerHTML=opts.map(o=>`<option value="${o}">${ymLabel(o)}</option>`).join('');
+  sel.onchange=()=>loadAporteFields();
+
+  // build input cards
+  document.getElementById('aporte-grid').innerHTML=COMPANIES.map((c,i)=>`
+    <div class="aporte-card" data-c="${c.color}">
+      <div class="aporte-ticker">${c.ticker}</div>
+      <div class="aporte-name">${c.name}</div>
+      <div class="inp-wrap">
+        <span class="inp-pre" style="font-size:12px">R$</span>
+        <input type="number" class="inp sm" id="ap-${c.ticker}" value="0" min="0" step="1" placeholder="0">
+      </div>
+    </div>
+  `).join('');
+
+  loadAporteFields();
+}
+
+function loadAporteFields(){
+  const mes=document.getElementById('aporte-mes').value;
+  const saved=aportes[mes]||{};
+  COMPANIES.forEach(c=>{
+    const el=document.getElementById('ap-'+c.ticker);
+    if(el) el.value=saved[c.ticker]||0;
+  });
+  const btn=document.getElementById('save-btn');
+  btn.textContent='💾 Salvar aporte';
+  btn.className='save-btn';
+}
+
+async function saveAporte(){
+  const mes=document.getElementById('aporte-mes').value;
+  const entry={};
+  COMPANIES.forEach(c=>{
+    const el=document.getElementById('ap-'+c.ticker);
+    entry[c.ticker]=parseFloat(el.value)||0;
+  });
+  aportes[mes]=entry;
+  await saveData();
+
+  const btn=document.getElementById('save-btn');
+  btn.textContent='✓ Salvo!';
+  btn.className='save-btn saved';
+  setTimeout(()=>{btn.textContent='💾 Salvar aporte';btn.className='save-btn';},2000);
+}
+
+// ─── HISTÓRIO ─────────────────────────────────────────────
+function renderHist(){
+  const keys=Object.keys(aportes).sort();
+
+  // acumulado por empresa
+  const acum={};
+  COMPANIES.forEach(c=>acum[c.ticker]=0);
+  let totalInv=0;
+  keys.forEach(k=>{
+    COMPANIES.forEach(c=>{
+      acum[c.ticker]+=(aportes[k][c.ticker]||0);
+      totalInv+=(aportes[k][c.ticker]||0);
+    });
+  });
+
+  const dyMedio=totalInv>0
+    ? COMPANIES.reduce((s,c)=>s+(acum[c.ticker]/totalInv)*c.dy,0) : 0;
+  const divAno=totalInv*dyMedio;
+
+  document.getElementById('total-inv').textContent=fmtBR(totalInv);
+  document.getElementById('total-div-ano').textContent=fmtBR(divAno);
+  document.getElementById('total-meses').textContent=keys.length;
+  document.getElementById('dy-medio').textContent=(dyMedio*100).toFixed(1).replace('.',',')+'%';
+
+  // acumulado cards
+  document.getElementById('acum-grid').innerHTML=COMPANIES.map(c=>`
+    <div class="div-card">
+      <div class="div-ticker">${c.ticker}</div>
+      <div class="div-val" style="color:${COLORS_MAP[c.color]}">${fmtBR(acum[c.ticker])}</div>
+      <div class="div-sub">${totalInv>0?Math.round(acum[c.ticker]/totalInv*100)+'% da carteira':'—'}</div>
+    </div>
+  `).join('');
+
+  // table
+  if(!keys.length){
+    document.getElementById('hist-table-wrap').innerHTML='<div class="empty">Nenhum aporte registrado. Vá em "Registrar Aporte" para começar.</div>';
+    return;
+  }
+
+  const html=`<table class="hist-table">
+    <thead><tr>
+      <th>Mês</th>
+      ${COMPANIES.map(c=>`<th>${c.ticker}</th>`).join('')}
+      <th>Total</th>
+      <th></th>
+    </tr></thead>
+    <tbody>
+    ${keys.reverse().map(k=>{
+      const row=aportes[k]||{};
+      const tot=COMPANIES.reduce((s,c)=>s+(row[c.ticker]||0),0);
+      return `<tr>
+        <td>${ymLabel(k)}</td>
+        ${COMPANIES.map(c=>`<td style="color:${COLORS_MAP[c.color]}">${fmtBR(row[c.ticker]||0)}</td>`).join('')}
+        <td style="color:var(--text)">${fmtBR(tot)}</td>
+        <td><button class="del-btn" onclick="deleteAporte('${k}')">🗑</button></td>
+      </tr>`;
+    }).join('')}
+    </tbody>
+  </table>`;
+  document.getElementById('hist-table-wrap').innerHTML=html;
+}
+
+async function deleteAporte(mes){
+  if(!confirm(`Apagar aporte de ${ymLabel(mes)}?`)) return;
+  delete aportes[mes];
+  await saveData();
+  renderHist();
+}
+
+// ─── PROJEÇÃO REAL ────────────────────────────────────────
+function renderProj(){
+  const keys=Object.keys(aportes).sort();
+
+  // build cumulative series
+  let cumul=0;
+  const realLabels=[], realData=[], divMesData=[];
+  const DY_MEDIO=0.07;
+
+  keys.forEach(k=>{
+    const tot=COMPANIES.reduce((s,c)=>s+(aportes[k][c.ticker]||0),0);
+    cumul+=tot;
+    // estimate weighted DY
+    const acum={};COMPANIES.forEach(c=>acum[c.ticker]=0);
+    keys.slice(0,keys.indexOf(k)+1).forEach(kk=>{COMPANIES.forEach(c=>{acum[c.ticker]+=(aportes[kk][c.ticker]||0);});});
+    const totalAcum=COMPANIES.reduce((s,c)=>s+(acum[c.ticker]||0),0);
+    const dyW=totalAcum>0?COMPANIES.reduce((s,c)=>s+(acum[c.ticker]/totalAcum)*c.dy,0):DY_MEDIO;
+    realLabels.push(ymLabel(k));
+    realData.push(Math.round(cumul));
+    divMesData.push(Math.round(cumul*dyW/12));
+  });
+
+  const patrimAtual=realData.length?realData[realData.length-1]:0;
+  const divMesAtual=divMesData.length?divMesData[divMesData.length-1]:0;
+  const apoMed=keys.length?COMPANIES.reduce((s,c)=>s+COMPANIES.map(()=>0).reduce((_s,_,i)=>_s+(aportes[keys[i]]?.[c.ticker]||0),0),0)/(keys.length||1):0;
+  // simpler avg
+  const totalInv=Object.values(aportes).reduce((s,v)=>s+COMPANIES.reduce((ss,c)=>ss+(v[c.ticker]||0),0),0);
+  const apoMedSimple=keys.length?totalInv/keys.length:0;
+
+  document.getElementById('proj-patrim').textContent=fmtBR(patrimAtual);
+  document.getElementById('proj-div-mes').textContent=fmtBR(divMesAtual);
+  document.getElementById('proj-aporte-med').textContent=fmtBR(apoMedSimple);
+
+  // ETA to R$2500/month dividend
+  const META_DIV=2500, META_PATRIM=META_DIV*12/DY_MEDIO;
+  if(patrimAtual>=META_PATRIM){
+    document.getElementById('proj-eta').textContent='✓ Meta atingida!';
+  } else {
+    const dyM=DY_MEDIO/12;
+    let p=patrimAtual, m=0;
+    while(p<META_PATRIM && m<600){ p=p*(1+dyM)+apoMedSimple; m++; }
+    const anos=Math.ceil(m/12);
+    const anoChega=new Date().getFullYear()+anos;
+    document.getElementById('proj-eta').textContent=`~${anoChega} (${anos} anos)`;
+  }
+
+  // Real chart
+  const rctx=document.getElementById('real-chart').getContext('2d');
+  if(realChart){realChart.destroy();realChart=null;}
+
+  if(!realLabels.length){
+    document.getElementById('real-chart').getContext('2d').clearRect(0,0,9999,9999);
+    document.getElementById('real-chart').parentElement.innerHTML='<div class="empty" style="height:260px;display:flex;align-items:center;justify-content:center">Registre aportes para ver o gráfico de evolução real.</div>';
+  } else {
+    realChart=new Chart(rctx,{
+      type:'bar',
+      data:{
+        labels:realLabels,
+        datasets:[
+          {label:'Patrimônio acumulado',data:realData,backgroundColor:COMPANIES.map((c,i)=>COLORS_MAP[c.color]+'40'),borderColor:'#00E5A0',borderWidth:1.5,borderRadius:6,type:'bar',yAxisID:'y'},
+          {label:'Dividendo mensal est.',data:divMesData,borderColor:'#FFB020',borderDash:[5,3],borderWidth:2,fill:false,tension:.4,pointRadius:4,type:'line',yAxisID:'y2'},
+        ]
+      },
+      options:{
+        responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{display:true,labels:{color:'#8A97B5',font:{family:'DM Mono',size:11},boxWidth:12}},
+          tooltip:{callbacks:{label:c=>c.dataset.label+': '+fmtBR(c.parsed.y)}}},
+        scales:{
+          x:{ticks:{color:'#4A5568',font:{family:'DM Mono',size:10},maxRotation:45,autoSkip:true,maxTicksLimit:12},grid:{color:'rgba(255,255,255,.04)'}},
+          y:{position:'left',ticks:{color:'#00E5A0',font:{family:'DM Mono',size:10},callback:v=>v>=1000?'R$'+Math.round(v/1000)+'k':fmtBR(v)},grid:{color:'rgba(255,255,255,.04)'}},
+          y2:{position:'right',ticks:{color:'#FFB020',font:{family:'DM Mono',size:10},callback:v=>fmtBR(v)},grid:{display:false}}
+        }
+      }
+    });
+  }
+
+  // Future projection
+  const futLabels=[], futData=[], futDivData=[];
+  const dyM=DY_MEDIO/12;
+  let p=patrimAtual;
+  for(let m=1;m<=180;m++){
+    p=p*(1+dyM)+apoMedSimple;
+    if(m%12===0){
+      futLabels.push('+'+(m/12)+'a');
+      futData.push(Math.round(p));
+      futDivData.push(Math.round(p*DY_MEDIO/12));
+    }
+  }
+
+  const fctx=document.getElementById('fut-chart').getContext('2d');
+  if(futChart){futChart.destroy();futChart=null;}
+  futChart=new Chart(fctx,{
+    type:'line',
+    data:{labels:futLabels,datasets:[
+      {label:'Patrimônio projetado',data:futData,borderColor:'#00E5A0',backgroundColor:'rgba(0,229,160,.07)',fill:true,tension:.4,pointRadius:2,yAxisID:'y'},
+      {label:'Dividendo mensal',data:futDivData,borderColor:'#FFB020',borderDash:[5,3],fill:false,tension:.4,pointRadius:0,yAxisID:'y2'},
+      {label:'Meta R$2.500/mês',data:futLabels.map(()=>META_PATRIM),borderColor:'rgba(255,92,92,.5)',borderDash:[4,4],borderWidth:1,pointRadius:0,fill:false,yAxisID:'y'},
+    ]},
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:true,labels:{color:'#8A97B5',font:{family:'DM Mono',size:11},boxWidth:12}},
+        tooltip:{callbacks:{label:c=>c.dataset.label+': '+fmtBR(c.parsed.y)}}},
+      scales:{
+        x:{ticks:{color:'#4A5568',font:{family:'DM Mono',size:10},maxRotation:0,autoSkip:true,maxTicksLimit:8},grid:{color:'rgba(255,255,255,.04)'}},
+        y:{position:'left',ticks:{color:'#00E5A0',font:{family:'DM Mono',size:10},callback:v=>v>=1000000?'R$'+(v/1000000).toFixed(1)+'M':v>=1000?'R$'+Math.round(v/1000)+'k':fmtBR(v)},grid:{color:'rgba(255,255,255,.04)'}},
+        y2:{position:'right',ticks:{color:'#FFB020',font:{family:'DM Mono',size:10},callback:v=>fmtBR(v)},grid:{display:false}}
+      }
+    }
+  });
+}
+
+// ─── EVENTS ───────────────────────────────────────────────
+document.getElementById('renda-slider').addEventListener('input',function(){
+  document.getElementById('renda-input').value=this.value; updateCalc();
+});
+document.getElementById('renda-input').addEventListener('input',function(){
+  const v=Math.min(15000,Math.max(1000,parseFloat(this.value)||1000));
+  document.getElementById('renda-slider').value=v; updateCalc();
+});
+document.getElementById('fixas-input').addEventListener('input',updateCalc);
+
+// ─── INIT ─────────────────────────────────────────────────
+(async function init(){
+  await loadData();
+  buildCompanyCards();
+  updateCalc();
+})();
+</script>
+
+<!-- PWA Install Banner -->
+<div id="install-banner" style="display:none;position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:9999;
+  background:#111827;border:1px solid rgba(0,229,160,0.3);border-radius:16px;padding:14px 20px;
+  align-items:center;gap:14px;box-shadow:0 8px 32px rgba(0,0,0,0.5);max-width:340px;width:90%;">
+  <img src="icon-96.png" width="40" height="40" style="border-radius:10px;flex-shrink:0">
+  <div style="flex:1">
+    <div style="font-family:'Sora',sans-serif;font-size:13px;font-weight:600;color:#F0F4FF;margin-bottom:2px">Instalar como App</div>
+    <div style="font-family:'Sora',sans-serif;font-size:11px;color:#8A97B5">Adicionar à tela inicial do Android</div>
+  </div>
+  <button onclick="installApp()" style="background:#00E5A0;color:#0A0E17;border:none;border-radius:10px;
+    padding:8px 14px;font-family:'DM Mono',monospace;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap">
+    Instalar
+  </button>
+  <button onclick="document.getElementById('install-banner').style.display='none'" 
+    style="background:transparent;border:none;color:#4A5568;cursor:pointer;font-size:18px;padding:0 4px">×</button>
+</div>
+
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js')
+      .then(reg => console.log('[PWA] Service Worker registrado:', reg.scope))
+      .catch(err => console.log('[PWA] Erro SW:', err));
+  });
+}
+
+// Install prompt for Android
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  // Show install banner after 3 seconds if not installed
+  setTimeout(() => {
+    const banner = document.getElementById('install-banner');
+    if (banner) banner.style.display = 'flex';
+  }, 3000);
+});
+
+function installApp() {
+  const banner = document.getElementById('install-banner');
+  if (banner) banner.style.display = 'none';
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(r => {
+      console.log('[PWA] Install choice:', r.outcome);
+      deferredPrompt = null;
+    });
+  }
+}
+
+window.addEventListener('appinstalled', () => {
+  const banner = document.getElementById('install-banner');
+  if (banner) banner.style.display = 'none';
+  console.log('[PWA] App instalado!');
+});
+</script>
+
+</body>
+</html>
