@@ -240,7 +240,35 @@ input.peso-sl::-webkit-slider-thumb:hover{transform:scale(1.3)}
 .badge.ok{background:var(--green-dim);color:var(--green);border:1px solid rgba(0,229,160,.2)}
 .badge.warn{background:var(--amber-dim);color:var(--amber);border:1px solid rgba(255,176,32,.2)}
 
-/* ── Animations ──────────────────────────────────────── */
+/* ── Info / Balanço cards ────────────────────────────── */
+.info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.info-card{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:22px;position:relative;overflow:hidden;transition:transform .2s}
+.info-card:hover{transform:translateY(-2px)}
+.info-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;border-radius:20px 20px 0 0}
+.info-card[data-c="green"]::before{background:var(--green)} .info-card[data-c="green"]{border-color:rgba(0,229,160,.2)}
+.info-card[data-c="amber"]::before{background:var(--amber)} .info-card[data-c="amber"]{border-color:rgba(255,176,32,.2)}
+.info-card[data-c="teal"]::before{background:var(--teal)}   .info-card[data-c="teal"]{border-color:rgba(0,206,201,.2)}
+.info-card[data-c="purple"]::before{background:var(--purple)}.info-card[data-c="purple"]{border-color:rgba(167,139,250,.2)}
+.info-card-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px}
+.info-ticker{font-family:'DM Serif Display',serif;font-size:20px;color:var(--text)}
+.info-quarter{font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);margin-top:3px}
+.rec-badge{font-size:11px;font-family:'DM Mono',monospace;font-weight:600;padding:4px 10px;border-radius:20px;letter-spacing:.04em}
+.rec-comprar{background:rgba(0,229,160,.15);color:var(--green);border:1px solid rgba(0,229,160,.3)}
+.rec-manter{background:rgba(255,176,32,.12);color:var(--amber);border:1px solid rgba(255,176,32,.3)}
+.rec-aguardar{background:rgba(255,92,92,.12);color:var(--red);border:1px solid rgba(255,92,92,.3)}
+.info-metrics{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.info-metric{background:var(--bg3);border-radius:10px;padding:9px 11px}
+.info-metric-label{font-size:10px;color:var(--text3);font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px}
+.info-metric-val{font-family:'DM Mono',monospace;font-size:14px;font-weight:500;color:var(--text)}
+.info-metric-val.up{color:var(--green)}
+.info-metric-val.down{color:var(--red)}
+.info-metric-val.neu{color:var(--amber)}
+.info-summary{font-size:12px;color:var(--text2);line-height:1.7;padding-top:12px;border-top:1px solid var(--border)}
+.info-loading{display:flex;align-items:center;gap:10px;padding:18px;background:var(--bg3);border-radius:14px;font-size:13px;color:var(--text2);font-family:'DM Mono',monospace}
+.info-loading .spin{display:inline-block;animation:spin .8s linear infinite;font-size:18px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.info-error{background:var(--red-dim);border:1px solid rgba(255,92,92,.2);border-radius:12px;padding:14px 16px;font-size:12px;color:var(--red);font-family:'DM Mono',monospace}
+.info-last-update{font-size:11px;color:var(--text3);font-family:'DM Mono',monospace;text-align:right;margin-top:12px}
 @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
 .pulse{animation:pulse .25s ease}
 @keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.05)}100%{transform:scale(1)}}
@@ -282,8 +310,36 @@ input.peso-sl::-webkit-slider-thumb:hover{transform:scale(1.3)}
   .tab{min-width:44px;padding:8px 6px}
   .tab-icon{font-size:18px}
 }
+/* ── Bazin / Preço Teto ──────────────────────────────── */
+.bazin-result-metric{background:var(--bg3);border-radius:12px;padding:14px;text-align:center}
+.bazin-result-label{font-size:10px;color:var(--text3);font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px}
+.bazin-result-val{font-family:'DM Mono',monospace;font-size:18px;font-weight:500}
+.verdict{border-radius:14px;padding:14px 16px;font-size:13px;line-height:1.6;font-family:'DM Mono',monospace}
+.verdict.comprar{background:rgba(0,229,160,.1);border:1px solid rgba(0,229,160,.25);color:var(--green)}
+.verdict.caro{background:rgba(255,92,92,.08);border:1px solid rgba(255,92,92,.2);color:var(--red)}
+.verdict.atencao{background:rgba(255,176,32,.08);border:1px solid rgba(255,176,32,.2);color:var(--amber)}
+.bazin-hist-item{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);gap:10px;flex-wrap:wrap}
+.bazin-hist-item:last-child{border-bottom:none}
+.bazin-hist-ticker{font-family:'DM Serif Display',serif;font-size:16px;color:var(--text);min-width:70px}
+.bazin-hist-vals{display:flex;gap:12px;flex-wrap:wrap;flex:1}
+.bazin-hist-val{font-size:11px;color:var(--text2);font-family:'DM Mono',monospace}
+.bazin-hist-val span{color:var(--text);font-weight:500}
+.dest-card{background:var(--bg3);border-radius:16px;padding:18px;position:relative;overflow:hidden;transition:transform .2s}
+.dest-card:hover{transform:translateY(-2px)}
+.dest-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.dest-card.d0::before{background:var(--green)}.dest-card.d1::before{background:var(--amber)}.dest-card.d2::before{background:var(--teal)}
+.dest-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
+.dest-ticker{font-family:'DM Serif Display',serif;font-size:19px;color:var(--text)}
+.dest-teto-badge{font-size:11px;font-family:'DM Mono',monospace;padding:3px 9px;border-radius:20px}
+.dest-teto-ok{background:var(--green-dim);color:var(--green);border:1px solid rgba(0,229,160,.2)}
+.dest-teto-warn{background:var(--amber-dim);color:var(--amber);border:1px solid rgba(255,176,32,.2)}
+.dest-metrics{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:10px}
+.dest-metric{background:var(--bg2);border-radius:8px;padding:7px 9px}
+.dest-metric-lbl{font-size:10px;color:var(--text3);font-family:'DM Mono',monospace;text-transform:uppercase;margin-bottom:2px}
+.dest-metric-val{font-family:'DM Mono',monospace;font-size:13px;font-weight:500;color:var(--text)}
+.dest-why{font-size:12px;color:var(--text2);line-height:1.6;padding-top:10px;border-top:1px solid var(--border)}
+.dest-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
 </style>
-</head>
 <body>
 <div class="container">
 
@@ -300,6 +356,8 @@ input.peso-sl::-webkit-slider-thumb:hover{transform:scale(1.3)}
   <button class="tab" onclick="showPanel('aporte')"><span class="tab-icon">💰</span><span class="tab-label">Aporte</span></button>
   <button class="tab" onclick="showPanel('hist')"><span class="tab-icon">📋</span><span class="tab-label">Histórico</span></button>
   <button class="tab" onclick="showPanel('proj')"><span class="tab-icon">📈</span><span class="tab-label">Projeção</span></button>
+  <button class="tab" onclick="showPanel('info')"><span class="tab-icon">🔍</span><span class="tab-label">Balanço</span></button>
+  <button class="tab" onclick="showPanel('teto')"><span class="tab-icon">🎯</span><span class="tab-label">Preço Teto</span></button>
   <button class="tab" onclick="showPanel('config')"><span class="tab-icon">⚙️</span><span class="tab-label">Config</span></button>
 </div>
 
@@ -437,6 +495,113 @@ input.peso-sl::-webkit-slider-thumb:hover{transform:scale(1.3)}
 </div>
 
 
+<!-- ═══════════════ PANEL: BALANÇO TRIMESTRAL ═══════════════ -->
+<div class="panel" id="panel-info">
+
+  <div class="box accent" style="margin-bottom:20px">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+      <div>
+        <div class="sec-title" style="margin-bottom:4px">Balanço Trimestral — IA</div>
+        <p style="font-size:12px;color:var(--text2);line-height:1.6">Análise gerada por IA com dados do último trimestre disponível para cada empresa da sua carteira.</p>
+      </div>
+      <button class="save-btn" id="info-refresh-btn" onclick="loadInfoPanel()">
+        🔍 Analisar carteira
+      </button>
+    </div>
+  </div>
+
+  <div id="info-cards-wrap">
+    <div class="empty" style="padding:60px 20px">
+      <div style="font-size:36px;margin-bottom:12px">🔍</div>
+      <div style="color:var(--text2);font-size:14px;margin-bottom:6px">Toque em "Analisar carteira" para ver o balanço</div>
+      <div style="color:var(--text3);font-size:12px">A IA consulta os dados mais recentes de cada empresa</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════ PANEL: PREÇO TETO BAZIN ═══════════════ -->
+<div class="panel" id="panel-teto">
+
+  <!-- Calculadora Bazin -->
+  <div class="box accent" style="margin-bottom:20px">
+    <div class="sec-title" style="margin-bottom:4px">🎯 Calculadora Preço Teto — Bazin</div>
+    <p style="font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:20px">
+      Fórmula: <strong style="color:var(--green);font-family:'DM Mono',monospace">Preço Teto = Dividendo anual ÷ 6%</strong><br>
+      O preço máximo que você deve pagar para garantir pelo menos 6% de retorno em dividendos.
+    </p>
+
+    <div class="grid2" style="margin-bottom:16px">
+      <div class="input-group">
+        <label>Ticker da ação (ex: TAEE11)</label>
+        <div class="inp-wrap" style="position:relative">
+          <input class="inp" id="bazin-ticker" placeholder="TAEE11" style="padding-left:14px;text-transform:uppercase"
+            oninput="this.value=this.value.toUpperCase()">
+        </div>
+      </div>
+      <div class="input-group">
+        <label>Dividendo total pago nos últimos 12 meses (R$)</label>
+        <div class="inp-wrap"><span class="inp-pre">R$</span>
+          <input type="number" class="inp" id="bazin-div" placeholder="3.20" min="0" step="0.01">
+        </div>
+      </div>
+    </div>
+
+    <div class="grid2" style="margin-bottom:20px">
+      <div class="input-group">
+        <label>Preço atual da ação (R$)</label>
+        <div class="inp-wrap"><span class="inp-pre">R$</span>
+          <input type="number" class="inp" id="bazin-preco" placeholder="37.00" min="0" step="0.01"
+            oninput="calcBazin()">
+        </div>
+      </div>
+      <div class="input-group">
+        <label>Nome da empresa (opcional)</label>
+        <div class="inp-wrap">
+          <input class="inp" id="bazin-nome" placeholder="Ex: Transmissão Paulista" style="padding-left:14px">
+        </div>
+      </div>
+    </div>
+
+    <button class="save-btn" onclick="calcBazin()" style="width:100%;margin-bottom:16px;font-size:14px;padding:14px">
+      🎯 Calcular preço teto
+    </button>
+
+    <!-- Resultado -->
+    <div id="bazin-result" style="display:none">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px" id="bazin-metrics"></div>
+      <div id="bazin-verdict"></div>
+    </div>
+  </div>
+
+  <!-- Histórico de cálculos -->
+  <div class="box" style="margin-bottom:20px" id="bazin-hist-box" style="display:none">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px">
+      <div class="sec-title" style="margin-bottom:0">Cálculos salvos</div>
+      <button class="del-btn" onclick="clearBazinHist()" style="font-size:11px">🗑 Limpar tudo</button>
+    </div>
+    <div id="bazin-hist-list"></div>
+  </div>
+
+  <!-- Destaques IA -->
+  <div class="box accent">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:16px">
+      <div>
+        <div class="sec-title" style="margin-bottom:4px">⭐ Destaques BEST — IA</div>
+        <p style="font-size:12px;color:var(--text2)">3 ações do método BEST que a IA considera mais atrativas agora</p>
+      </div>
+      <button class="save-btn" id="dest-btn" onclick="loadDestaques()">✨ Ver destaques</button>
+    </div>
+    <div id="dest-wrap">
+      <div class="empty" style="padding:32px 16px">
+        <div style="font-size:28px;margin-bottom:8px">⭐</div>
+        <div style="color:var(--text2);font-size:13px">Toque em "Ver destaques" para a IA analisar</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
 <div class="panel" id="panel-config">
   <div class="box accent">
     <div class="sec-title">Configurações da Carteira</div>
@@ -514,12 +679,13 @@ function showPanel(id){
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('panel-'+id).classList.add('active');
-  const idx={calc:0,aporte:1,hist:2,proj:3,config:4}[id];
+  const idx={calc:0,aporte:1,hist:2,proj:3,info:4,teto:5,config:6}[id];
   document.querySelectorAll('.tab')[idx].classList.add('active');
   if(id==='hist')   renderHist();
   if(id==='proj')   renderProj();
   if(id==='aporte') renderAportePanel();
   if(id==='config') renderConfig();
+  if(id==='teto')   renderBazinHist();
 }
 
 // ─── CALCULADORA ─────────────────────────────────────────
@@ -902,6 +1068,214 @@ function renderProj(){
 }
 
 
+// ─── BAZIN / PREÇO TETO ──────────────────────────────────
+const BAZIN_KEY = 'best_bazin_hist';
+
+function getBazinHist(){
+  try { return JSON.parse(localStorage.getItem(BAZIN_KEY)||'[]'); }
+  catch(e){ return []; }
+}
+function saveBazinHist(hist){
+  localStorage.setItem(BAZIN_KEY, JSON.stringify(hist));
+}
+
+function calcBazin(){
+  const ticker = (document.getElementById('bazin-ticker').value||'').trim().toUpperCase();
+  const div    = parseFloat(document.getElementById('bazin-div').value)||0;
+  const preco  = parseFloat(document.getElementById('bazin-preco').value)||0;
+  const nome   = document.getElementById('bazin-nome').value||ticker;
+
+  if(!div){ alert('Informe o dividendo anual para calcular.'); return; }
+
+  const teto   = div / 0.06;
+  const dyReal = preco > 0 ? (div / preco * 100) : 0;
+  const margem = preco > 0 ? ((teto - preco) / teto * 100) : 0;
+
+  // Show result
+  document.getElementById('bazin-result').style.display = 'block';
+  document.getElementById('bazin-metrics').innerHTML = `
+    <div class="bazin-result-metric">
+      <div class="bazin-result-label">Preço Teto Bazin</div>
+      <div class="bazin-result-val" style="color:var(--green)">R$ ${teto.toFixed(2).replace('.',',')}</div>
+    </div>
+    <div class="bazin-result-metric">
+      <div class="bazin-result-label">DY ao preço atual</div>
+      <div class="bazin-result-val" style="color:${dyReal>=6?'var(--green)':dyReal>=4?'var(--amber)':'var(--red)'}">
+        ${preco>0?dyReal.toFixed(2).replace('.',',')+' %':'—'}
+      </div>
+    </div>
+    <div class="bazin-result-metric">
+      <div class="bazin-result-label">Margem de segurança</div>
+      <div class="bazin-result-val" style="color:${margem>15?'var(--green)':margem>0?'var(--amber)':'var(--red)'}">
+        ${preco>0?(margem>0?'+':'')+margem.toFixed(1).replace('.',',')+' %':'—'}
+      </div>
+    </div>`;
+
+  let verdictClass, verdictIcon, verdictText;
+  if(preco <= 0){
+    verdictClass='atencao'; verdictIcon='ℹ️';
+    verdictText=`Preço teto calculado: <strong>R$ ${teto.toFixed(2).replace('.',',')}</strong>. Informe o preço atual para ver o veredicto de compra.`;
+  } else if(preco <= teto * 0.90){
+    verdictClass='comprar'; verdictIcon='✅';
+    verdictText=`<strong>ABAIXO DO TETO</strong> com ${margem.toFixed(1).replace('.',',')}% de margem de segurança. Preço teto: R$ ${teto.toFixed(2).replace('.',',')} · Atual: R$ ${preco.toFixed(2).replace('.',',')}. Dentro da zona de compra pelo método Bazin.`;
+  } else if(preco <= teto){
+    verdictClass='atencao'; verdictIcon='⚠️';
+    verdictText=`<strong>PRÓXIMO DO TETO</strong> — margem de segurança pequena (${margem.toFixed(1).replace('.',',')}%). Preço teto: R$ ${teto.toFixed(2).replace('.',',')} · Atual: R$ ${preco.toFixed(2).replace('.',',')}. Compra aceitável mas sem folga.`;
+  } else {
+    verdictClass='caro'; verdictIcon='⛔';
+    verdictText=`<strong>ACIMA DO TETO</strong> — ${Math.abs(margem).toFixed(1).replace('.',',')}% mais caro que o limite. Preço teto: R$ ${teto.toFixed(2).replace('.',',')} · Atual: R$ ${preco.toFixed(2).replace('.',',')}. Aguarde correção antes de comprar.`;
+  }
+
+  document.getElementById('bazin-verdict').innerHTML =
+    `<div class="verdict ${verdictClass}">${verdictIcon} ${verdictText}</div>`;
+
+  // Save to history if ticker informed
+  if(ticker){
+    const hist = getBazinHist().filter(h => h.ticker !== ticker); // replace if exists
+    hist.unshift({ ticker, nome, div, preco: preco||null, teto, dyReal: preco>0?dyReal:null, date: new Date().toLocaleDateString('pt-BR') });
+    saveBazinHist(hist.slice(0, 20)); // keep last 20
+    renderBazinHist();
+  }
+}
+
+function renderBazinHist(){
+  const hist = getBazinHist();
+  const box  = document.getElementById('bazin-hist-box');
+  const list = document.getElementById('bazin-hist-list');
+  if(!box || !list) return;
+
+  if(!hist.length){ box.style.display='none'; return; }
+  box.style.display = 'block';
+
+  list.innerHTML = hist.map(h => `
+    <div class="bazin-hist-item">
+      <span class="bazin-hist-ticker">${h.ticker}</span>
+      <div class="bazin-hist-vals">
+        <span class="bazin-hist-val">Div: <span>R$ ${h.div.toFixed(2).replace('.',',')}</span></span>
+        <span class="bazin-hist-val">Teto: <span style="color:var(--green)">R$ ${h.teto.toFixed(2).replace('.',',')}</span></span>
+        ${h.preco?`<span class="bazin-hist-val">Atual: <span style="color:${h.preco<=h.teto?'var(--green)':'var(--red)'}">R$ ${h.preco.toFixed(2).replace('.',',')}</span></span>`:''}
+        ${h.dyReal?`<span class="bazin-hist-val">DY: <span>${h.dyReal.toFixed(1).replace('.',',')}%</span></span>`:''}
+      </div>
+      <span style="font-size:10px;color:var(--text3);font-family:'DM Mono',monospace;white-space:nowrap">${h.date}</span>
+    </div>`).join('');
+}
+
+function clearBazinHist(){
+  if(!confirm('Limpar todos os cálculos salvos?')) return;
+  localStorage.removeItem(BAZIN_KEY);
+  renderBazinHist();
+}
+
+// Também calcula ao pressionar Enter
+document.addEventListener('DOMContentLoaded', ()=>{
+  ['bazin-ticker','bazin-div','bazin-preco','bazin-nome'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) el.addEventListener('keydown', e=>{ if(e.key==='Enter') calcBazin(); });
+  });
+});
+
+// ─── DESTAQUES BEST (IA) ─────────────────────────────────
+async function loadDestaques(){
+  const wrap = document.getElementById('dest-wrap');
+  const btn  = document.getElementById('dest-btn');
+  btn.textContent = '⏳ Analisando...';
+  btn.disabled = true;
+
+  wrap.innerHTML = `<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px">
+    ${[0,1,2].map(i=>`<div class="info-loading"><span class="spin">⟳</span><span>Buscando destaque ${i+1}...</span></div>`).join('')}
+  </div>`;
+
+  try {
+    const prompt = `Você é um analista de ações brasileiras especializado no método BEST (Bancos, Energia, Saneamento, Seguros, Telecom) para investidores de dividendos de longo prazo.
+
+Escolha as 3 melhores ações do método BEST disponíveis na B3 agora, priorizando:
+1. Estar abaixo ou próxima do preço teto (dividendo anual ÷ 6%)
+2. DY acima de 6% a.a.
+3. Histórico consistente de pelo menos 5 anos pagando dividendos
+4. Lucro operacional recorrente e crescente
+
+Responda SOMENTE com JSON válido, sem markdown:
+{
+  "destaques": [
+    {
+      "ticker": "string",
+      "nome": "string",
+      "setor": "string",
+      "preco_atual": "string ex: R$ 37,44",
+      "preco_teto_bazin": "string ex: R$ 42,00",
+      "status_teto": "abaixo|proximo|acima",
+      "dy_estimado": "string ex: 7,8%",
+      "ultimo_dividendo_anual": "string ex: R$ 2,52",
+      "pontos_fortes": "string em português, máximo 2 frases",
+      "ponto_atencao": "string em português, 1 frase sobre o principal risco"
+    }
+  ]
+}`;
+
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:1200,
+        messages:[{role:'user',content:prompt}]
+      })
+    });
+
+    const data = await resp.json();
+    const raw  = data.content.map(i=>i.text||'').join('');
+    const json = JSON.parse(raw.replace(/```json|```/g,'').trim());
+    const destaques = json.destaques || [];
+
+    const DEST_COLORS = ['d0','d1','d2'];
+    wrap.innerHTML = `<div class="dest-grid">${destaques.map((d,i)=>`
+      <div class="dest-card ${DEST_COLORS[i]}" style="animation:fadeUp .4s ${i*.1}s ease both">
+        <div class="dest-head">
+          <div>
+            <div class="dest-ticker">${d.ticker}</div>
+            <div style="font-size:11px;color:var(--text2);font-family:'DM Mono',monospace">${d.setor}</div>
+          </div>
+          <span class="dest-teto-badge ${d.status_teto==='abaixo'?'dest-teto-ok':'dest-teto-warn'}">
+            ${d.status_teto==='abaixo'?'✓ Abaixo do teto':d.status_teto==='proximo'?'⚠ Próximo do teto':'⛔ Acima do teto'}
+          </span>
+        </div>
+        <div class="dest-metrics">
+          <div class="dest-metric">
+            <div class="dest-metric-lbl">Preço atual</div>
+            <div class="dest-metric-val">${d.preco_atual}</div>
+          </div>
+          <div class="dest-metric">
+            <div class="dest-metric-lbl">Preço teto</div>
+            <div class="dest-metric-val" style="color:var(--green)">${d.preco_teto_bazin}</div>
+          </div>
+          <div class="dest-metric">
+            <div class="dest-metric-lbl">DY estimado</div>
+            <div class="dest-metric-val" style="color:var(--green)">${d.dy_estimado}</div>
+          </div>
+          <div class="dest-metric">
+            <div class="dest-metric-lbl">Div. anual</div>
+            <div class="dest-metric-val">${d.ultimo_dividendo_anual}</div>
+          </div>
+        </div>
+        <div class="dest-why">
+          <div style="margin-bottom:6px">${d.pontos_fortes}</div>
+          <div style="color:var(--amber);font-size:11px">⚠ ${d.ponto_atencao}</div>
+        </div>
+      </div>`).join('')}
+    </div>
+    <div style="font-size:11px;color:var(--text3);font-family:'DM Mono',monospace;text-align:right;margin-top:10px">
+      Análise IA · ${new Date().toLocaleString('pt-BR')} · Sempre confirme dados antes de investir.
+    </div>`;
+
+  } catch(err){
+    console.error('Destaques erro:', err);
+    wrap.innerHTML = `<div class="info-error">⚠️ Não foi possível carregar os destaques. Tente novamente.</div>`;
+  }
+
+  btn.textContent = '🔄 Atualizar';
+  btn.disabled = false;
+}
+
 function saveCompanies(){localStorage.setItem("best_companies",JSON.stringify(COMPANIES));}
 function renderConfig(){
   const wrap=document.getElementById("config-list");
@@ -925,7 +1299,144 @@ function addCompany(){COMPANIES.push({ticker:'NOVA3',name:'Nova Empresa',sector:
 function removeCompany(i){if(confirm('Remover empresa?')){COMPANIES.splice(i,1);renderConfig();}}
 function saveAllCompanies(){saveCompanies();pesos=COMPANIES.map(c=>c.peso||10);enabled=COMPANIES.map(()=>true);buildCompanyCards();renderAportePanel();updateCalc();alert('Alterações salvas');}
 
-// ─── EVENTS ───────────────────────────────────────────────
+// ─── BALANÇO TRIMESTRAL (IA) ──────────────────────────────
+let infoCache = {}; // cache por ticker para não chamar API toda vez
+
+async function loadInfoPanel() {
+  const wrap = document.getElementById('info-cards-wrap');
+  const btn  = document.getElementById('info-refresh-btn');
+
+  btn.textContent = '⏳ Analisando...';
+  btn.disabled = true;
+
+  // Show loading state for each company
+  wrap.innerHTML = `<div class="info-grid">${COMPANIES.map(c=>`
+    <div class="info-loading">
+      <span class="spin">⟳</span>
+      <span>Buscando dados de <strong>${c.ticker}</strong>...</span>
+    </div>
+  `).join('')}</div>`;
+
+  // Fetch all companies in parallel
+  const results = await Promise.all(COMPANIES.map(c => fetchCompanyInfo(c)));
+
+  // Render cards
+  wrap.innerHTML = `<div class="info-grid">${results.map(r => r.html).join('')}</div>
+    <div class="info-last-update">Atualizado em ${new Date().toLocaleString('pt-BR')}</div>`;
+
+  btn.textContent = '🔄 Atualizar';
+  btn.disabled = false;
+}
+
+async function fetchCompanyInfo(company) {
+  try {
+    const prompt = `Você é um analista financeiro especializado em ações brasileiras pagadoras de dividendos.
+
+Analise a empresa ${company.ticker} (${company.name}) do setor de ${company.sector}.
+
+Responda SOMENTE com um JSON válido, sem markdown, sem texto antes ou depois. Formato exato:
+{
+  "trimestre": "string com o último trimestre disponível ex: 1T26",
+  "dy_12m": "string ex: 7,8%",
+  "ultimo_dividendo": "string ex: R$ 0,42 por ação",
+  "roe": "string ex: 22,3%",
+  "margem_liquida": "string ex: 31,5%",
+  "variacao_lucro": "string ex: +12,4% vs trimestre anterior",
+  "tendencia_lucro": "up|down|neu",
+  "recomendacao": "COMPRAR|MANTER|AGUARDAR",
+  "motivo_recomendacao": "string curta em português, máximo 2 frases explicando o motivo",
+  "resumo": "string em português, máximo 3 frases sobre o desempenho recente e perspectivas de dividendos"
+}
+
+Use os dados mais recentes disponíveis até sua data de corte. Se não tiver dado preciso, use estimativa razoável baseada no histórico da empresa e indique com ~ antes do valor.`;
+
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+
+    const data = await response.json();
+    const raw  = data.content.map(i => i.text || '').join('');
+    const clean = raw.replace(/```json|```/g, '').trim();
+    const info  = JSON.parse(clean);
+
+    infoCache[company.ticker] = info;
+    return { html: buildInfoCard(company, info) };
+
+  } catch(err) {
+    console.error(`Erro ao buscar ${company.ticker}:`, err);
+    return { html: `
+      <div class="info-card" data-c="${company.color}">
+        <div class="info-card-head">
+          <div><div class="info-ticker">${company.ticker}</div><div class="info-quarter">${company.name}</div></div>
+        </div>
+        <div class="info-error">⚠️ Não foi possível carregar os dados. Tente novamente.</div>
+      </div>` };
+  }
+}
+
+function buildInfoCard(company, info) {
+  const recClass = {
+    'COMPRAR': 'rec-comprar',
+    'MANTER':  'rec-manter',
+    'AGUARDAR':'rec-aguardar'
+  }[info.recomendacao] || 'rec-manter';
+
+  const recIcon = {
+    'COMPRAR': '✅',
+    'MANTER':  '⏸️',
+    'AGUARDAR':'⛔'
+  }[info.recomendacao] || '⏸️';
+
+  const tendIcon = info.tendencia_lucro === 'up' ? '↑' : info.tendencia_lucro === 'down' ? '↓' : '→';
+  const tendClass = info.tendencia_lucro === 'up' ? 'up' : info.tendencia_lucro === 'down' ? 'down' : 'neu';
+
+  return `
+  <div class="info-card" data-c="${company.color}" style="animation:fadeUp .5s ease both">
+    <div class="info-card-head">
+      <div>
+        <div class="info-ticker">${company.ticker}</div>
+        <div class="info-quarter">${company.name} · ${info.trimestre}</div>
+      </div>
+      <span class="rec-badge ${recClass}">${recIcon} ${info.recomendacao}</span>
+    </div>
+
+    <div class="info-metrics">
+      <div class="info-metric">
+        <div class="info-metric-label">DY 12 meses</div>
+        <div class="info-metric-val up">${info.dy_12m}</div>
+      </div>
+      <div class="info-metric">
+        <div class="info-metric-label">Último dividendo</div>
+        <div class="info-metric-val">${info.ultimo_dividendo}</div>
+      </div>
+      <div class="info-metric">
+        <div class="info-metric-label">ROE</div>
+        <div class="info-metric-val">${info.roe}</div>
+      </div>
+      <div class="info-metric">
+        <div class="info-metric-label">Margem líquida</div>
+        <div class="info-metric-val">${info.margem_liquida}</div>
+      </div>
+      <div class="info-metric" style="grid-column:1/-1">
+        <div class="info-metric-label">Variação do lucro</div>
+        <div class="info-metric-val ${tendClass}">${tendIcon} ${info.variacao_lucro}</div>
+      </div>
+    </div>
+
+    <div style="background:var(--bg3);border-radius:10px;padding:10px 12px;margin-bottom:12px;font-size:12px;color:var(--text2);line-height:1.6">
+      <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.04em;display:block;margin-bottom:4px">Por que ${info.recomendacao}?</span>
+      ${info.motivo_recomendacao}
+    </div>
+
+    <div class="info-summary">${info.resumo}</div>
+  </div>`;
+}
 document.getElementById('renda-slider').addEventListener('input',function(){
   document.getElementById('renda-input').value=this.value; updateCalc();
 });
