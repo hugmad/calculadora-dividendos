@@ -1249,7 +1249,10 @@ async function loadDestaques(){
   </div>`;
 
   try {
+    const carteiraAtual = COMPANIES.map(c => c.ticker).join(', ');
     const prompt = `Você é um analista de ações brasileiras especializado no método BEST (Bancos, Energia, Saneamento, Seguros, Telecom) para investidores de dividendos de longo prazo.
+
+A carteira atual do investidor já possui: ${carteiraAtual}. NÃO inclua nenhum desses tickers nos destaques — sugira apenas ações que ele ainda não tem.
 
 Escolha as 3 melhores ações do método BEST disponíveis na B3 agora, priorizando:
 1. Estar abaixo ou próxima do preço teto (dividendo anual ÷ 6%)
