@@ -1,5 +1,5 @@
 // Service Worker — Calculadora Dividendos BEST
-const CACHE_NAME = 'dividendos-best-v4';
+const CACHE_NAME = 'dividendos-best-v5';
 
 const LOCAL_ASSETS = [
   '/calculadora-dividendos/',
@@ -54,7 +54,8 @@ self.addEventListener('fetch', event => {
       caches.match(event.request).then(cached => {
         if (cached) return cached;
         return fetch(event.request).then(response => {
-          caches.open(CACHE_NAME).then(cache => cache.put(event.request, response.clone()));
+          const clone = response.clone(); // clona ANTES de qualquer uso
+          caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
           return response;
         }).catch(() => new Response('', { status: 503 }));
       })
@@ -62,11 +63,12 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  // Network-first para assets locais (sempre tenta atualizar, cai no cache se offline)
+  // Network-first para assets locais
   event.respondWith(
     fetch(event.request).then(response => {
       if (response.status === 200) {
-        caches.open(CACHE_NAME).then(cache => cache.put(event.request, response.clone()));
+        const clone = response.clone(); // clona ANTES de retornar
+        caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
       }
       return response;
     }).catch(() => caches.match(event.request))
