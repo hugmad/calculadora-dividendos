@@ -1,4 +1,4 @@
-# 📈 Calculadora de Dividendos
+# 📈 Calculadora de Dividendos V1.2
 
 Controle seus dividendos de forma simples, privada e totalmente local.
 
