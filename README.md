@@ -1,86 +1,68 @@
-<h1 align="center">📈 Calculadora de Dividendos</h1>
+# 📈 Calculadora de Dividendos
 
-<p align="center">
-  Controle seus dividendos de forma simples, privada e totalmente local.
-</p>
+Controle seus dividendos de forma simples, privada e totalmente local.
 
-<hr>
+---
 
-<h2>📱 Como utilizar</h2>
+## 📱 Como utilizar
 
-<p>
 Adicione seus dividendos e acompanhe seus investimentos diretamente pelo navegador.
 Ao acessar o link pelo celular, um banner poderá ser exibido permitindo a instalação da aplicação como um aplicativo (PWA).
-</p>
 
-<p>
 Após a instalação, você poderá utilizá-la como um app comum em seu dispositivo.
-</p>
 
-<h2>🔒 Privacidade</h2>
+## 💾 Backup
 
-<div style="border-left:4px solid #28a745;padding-left:15px;">
-  <p>
-    Esta calculadora foi desenvolvida para ser <strong>100% privada</strong>.
-  </p>
+Como os dados vivem apenas no dispositivo, o navegador pode apagá-los (limpeza de dados do site, ou inatividade prolongada no Safari/iOS). Na aba **⚙️ Config** você pode:
 
-  <ul>
-    <li>✅ Seus dados ficam armazenados apenas no seu dispositivo.</li>
-    <li>✅ Nenhuma informação é enviada para servidores.</li>
-    <li>✅ Não existe sincronização automática.</li>
-    <li>✅ Nenhum dado é compartilhado com terceiros.</li>
-  </ul>
-</div>
+- Exportar um backup completo em JSON (e reimportar em qualquer dispositivo).
+- Exportar o histórico de aportes em CSV para abrir no Excel.
 
-<p>
+## 🤖 Análises com IA
+
+As análises (Balanço Trimestral e Destaques BEST) usam o modelo Claude com **busca na web** para obter preços e indicadores atuais — mas IA pode errar. Nada no app constitui recomendação de investimento; sempre confirme os dados em fontes oficiais (B3, sites de RI das empresas) antes de decidir.
+
+Para usar, informe sua própria chave da API da Anthropic na aba **⚙️ Config** (obtenha em [console.anthropic.com](https://console.anthropic.com/settings/keys)).
+
+## 🔒 Privacidade
+
+Esta calculadora foi desenvolvida para ser **privada por padrão**.
+
+- ✅ Seus aportes e configurações ficam armazenados apenas no seu dispositivo.
+- ✅ Não existe sincronização automática nem servidores próprios.
+- ✅ Nenhum dado é vendido ou compartilhado para fins de publicidade.
+- ⚠️ **Exceção:** os recursos opcionais de IA enviam os tickers da sua carteira diretamente à API da Anthropic, usando a sua própria chave. Se você não usar esses recursos, nada sai do seu dispositivo.
+- 🔒 Sua chave de API fica salva apenas no navegador e **não é incluída** nos arquivos de backup exportados.
+
 ⚠️ Por segurança, evite armazenar informações detalhadas sobre seus investimentos em dispositivos de uso compartilhado. Seus investimentos interessam apenas a você.
-</p>
 
-<h2>🚀 Testar a Calculadora</h2>
+## 🚀 Testar a Calculadora
 
-<p align="center">
-  <a href="https://hugmad.github.io/calculadora-dividendos/" target="_blank">
-    <img src="https://img.shields.io/badge/Abrir%20Calculadora-4285F4?style=for-the-badge" alt="Abrir Calculadora">
-  </a>
-</p>
+<https://hugmad.github.io/calculadora-dividendos/>
 
-<p align="center">
-  <a href="https://hugmad.github.io/calculadora-dividendos/" target="_blank">
-    https://hugmad.github.io/calculadora-dividendos/
-  </a>
-</p>
+## 🗂 Estrutura do projeto
 
-<h2>🧪 Desenvolvimento</h2>
+- `index.html` — estrutura da página
+- `style.css` — estilos
+- `app.js` — toda a lógica (cálculos, gráficos, IA, backup)
+- `sw.js` — service worker (funcionamento offline)
+- `manifest.json` — configuração do PWA
 
-<p>
-Estou testando algumas funcionalidades utilizando recursos de nuvem. Ainda não sei se todas elas funcionarão corretamente em dispositivos móveis sem uma conta paga.
-</p>
+## 🛠 Personalização
 
-<h2>🛠 Personalização</h2>
-
-<p>
 Deseja modificar a calculadora?
-</p>
 
-<ol>
-  <li>Faça um fork do projeto.</li>
-  <li>Copie para seu próprio repositório.</li>
-  <li>Realize as alterações desejadas.</li>
-  <li>Publique sua própria versão.</li>
-</ol>
+1. Faça um fork do projeto.
+2. Copie para seu próprio repositório.
+3. Realize as alterações desejadas.
+4. Publique sua própria versão.
 
-<h2>📜 Licença</h2>
+## 📜 Licença
 
-<p>
 Você pode utilizar, estudar e modificar este projeto para uso pessoal.
-</p>
 
-<p>
-<strong>❌ É proibida a venda deste projeto ou de versões derivadas sem autorização prévia.</strong>
-</p>
+**❌ É proibida a venda deste projeto ou de versões derivadas sem autorização prévia.**
 
-<hr>
+---
 
-<p align="center">
-  Feito para investidores que valorizam privacidade, simplicidade e controle dos próprios dados.
-</p>
+Feito para investidores que valorizam privacidade, simplicidade e controle dos próprios dados.
