@@ -24,6 +24,22 @@ As análises (Balanço Trimestral e Destaques BEST) usam o modelo Claude com **b
 
 Para usar, informe sua própria chave da API da Anthropic na aba **⚙️ Config** (obtenha em [console.anthropic.com](https://console.anthropic.com/settings/keys)).
 
+## 📈 Cotações reais (brapi.dev)
+
+Com um token gratuito da [brapi.dev](https://brapi.dev) (configurado na aba **⚙️ Config**), o app busca o preço atual real das ações da B3:
+
+- **Verificar preços vs teto** na Calculadora: compara o preço de mercado de cada empresa com o teto cadastrado.
+- **Buscar preço atual** na calculadora Bazin: preenche o preço automaticamente.
+- O **Balanço Trimestral** passa a usar o preço real de mercado como base dos cálculos da IA.
+
+O token fica salvo apenas no seu dispositivo e não entra nos backups exportados.
+
+## 🔐 PIN de proteção
+
+Na aba **⚙️ Config** é possível criar um PIN de 4 dígitos exigido ao abrir o app. Após **10 tentativas erradas, todos os dados são apagados** do dispositivo — sem recuperação (exporte um backup antes de ativar!).
+
+O PIN nunca é armazenado em texto (apenas um hash com salt). Importante ser transparente: como o app é 100% local, o PIN protege contra acesso casual em dispositivos compartilhados, mas não contra alguém com conhecimento técnico para inspecionar o navegador.
+
 ## 🔒 Privacidade
 
 Esta calculadora foi desenvolvida para ser **privada por padrão**.

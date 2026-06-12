@@ -1,13 +1,14 @@
 // Service Worker — Calculadora Dividendos BEST
-const CACHE_NAME = 'dividendos-best-v5';
+const CACHE_NAME = 'dividendos-best-v7';
 
 const LOCAL_ASSETS = [
   '/calculadora-dividendos/',
   '/calculadora-dividendos/index.html',
+  '/calculadora-dividendos/style.css',
+  '/calculadora-dividendos/app.js',
   '/calculadora-dividendos/manifest.json',
   '/calculadora-dividendos/icon-192.png',
-  '/calculadora-dividendos/icon-512.png',
-  '/calculadora-dividendos/sw.js'
+  '/calculadora-dividendos/icon-512.png'
 ];
 
 const EXT_ASSETS = [
@@ -48,8 +49,8 @@ self.addEventListener('fetch', event => {
   // Ignora esquemas não suportados (chrome-extension, etc)
   if (!['http:', 'https:'].includes(url.protocol)) return;
 
-  // Ignora chamadas à API Anthropic — nunca cachear
-  if (url.hostname.includes('anthropic')) return;
+  // Ignora APIs externas de dados — nunca cachear
+  if (url.hostname.includes('anthropic') || url.hostname.includes('brapi.dev')) return;
 
   // Cache-first para fontes e libs externas
   if (url.hostname.includes('googleapis') || url.hostname.includes('cloudflare') || url.hostname.includes('gstatic')) {
